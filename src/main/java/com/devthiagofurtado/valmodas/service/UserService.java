@@ -98,4 +98,12 @@ public class UserService implements UserDetailsService {
         return DozerConverter.parseUsertoVO(user);
     }
 
+
+    public void validarUsuarioAdmGerente(String userName) {
+        List<Permission> permissions = findByUserName(userName).getPermissions();
+        if (permissions.stream().anyMatch(p -> p.getDescription().equals(PermissionVO.COMMON_USER.name()))) {
+            throw new ResourceBadRequestException("Apenas usuário Admin ou gerente pode executar a ação.");
+        }
+    }
+
 }
