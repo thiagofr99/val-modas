@@ -1,0 +1,642 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+
+}
+
+body{
+    font: 400 14px Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;        
+}
+
+input, button, textarea {
+    font: 400 18px Roboto, sans-serif;   
+}
+
+button{
+    cursor: pointer;
+    border-radius: 10px;
+    align-items: center;
+    padding-left: 0px;
+    font-weight: bold;
+    transition: 0.4s;
+}
+
+.input-button-3{
+   
+    width: 80%;
+
+}
+
+.input-button-4{
+    width: 40%;
+    font-size: 12px;    
+    
+}
+
+.input-button-deletar{
+    width: 40%;
+    font-size: 12px;    
+    background: red;
+    color: #FFF;
+}
+.input-button-deletar:hover{
+    background: rgb(81, 6, 6);
+    color: #000000;
+
+}
+
+.input-button-alterar{
+    width: 40%;
+    font-size: 12px;    
+    background: rgb(255, 140, 0);
+    color: #FFF;
+}
+.input-button-alterar:hover{
+    background: rgb(99, 57, 12);
+    color: #000000;
+
+}
+
+.input-button-patch{
+    width: 40%;
+    font-size: 12px;    
+    background: rgb(16, 149, 161);
+    color: #FFF;
+}
+.input-button-patch:hover{
+    background: rgb(12, 71, 99);
+    color: #000000;
+
+}
+
+
+
+.input-button-3,.input-button-4:hover{
+    background-color: #ba1fc5;
+    color: #FFF;
+}
+
+form input{
+    width: 90%;
+    height: 60px;
+    columns: #333333;
+    border: 1px solid #DCDCE6;
+    border-radius: 10px;
+    padding: 0 24px;
+    margin-top: 16px;
+    text-align: center;
+}
+
+.button{
+    width: 100%;
+    height: 60px;
+    background: #251FC5;
+    border: 0;
+    border-radius: 10px;
+    color: #FFF;
+    font-weight: 700;
+    margin-top: 16px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 60px;
+    transition: filter 0.2s;
+}
+
+.button:hover{
+    filter: brightness(80%);
+}
+
+#container footer{    
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+    flex-direction: column;
+}
+
+#container footer .dados-pessoais{
+    width: 1080px;
+    display: flex;
+    flex-direction: row;    
+}
+
+#container footer .endereco{
+    margin: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;    
+}
+
+#container footer .rede-social{
+    margin: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: row;    
+}
+
+#container footer .copyright{
+    width: 1080px;
+    height: 20px;
+    text-align: center;    
+    margin-top: 20px;    
+}
+
+nav ul{
+    list-style: none;
+    margin: 2px;
+    float: right;
+}
+
+nav ul li{
+    float: right;
+
+}
+
+nav ul li a{
+    color: black;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+nav ul li a:link{
+    display: block;
+    margin-right: 25px;
+    padding-bottom: 3px;
+    text-transform: uppercase;
+}
+
+nav ul li a:hover{
+    color: #fff;
+    border-bottom: 1px solid #535858;
+}
+
+.active{
+    color: #fff;
+    border-bottom: 1px solid #535858;
+}
+
+#container{
+    display: block;
+    width: 1080px;    
+    margin: 0 auto;    
+}
+
+#container body{
+    height: 100%;
+    background-color: transparent;
+    background: transparent;
+    margin-top: 50px;
+}
+
+#container body #consulta-1{
+    height: 120px;
+    border-radius: 25px;
+    background: rgba(131, 33, 131, 0.527);
+    margin-top: 20px;
+}
+
+#container body #consulta-2{
+    height: 120px;
+    border-radius: 25px;
+    background: rgba(44, 131, 33, 0.527);
+    margin-top: 20px;
+}
+
+#container body #consulta-3{
+    height: 120px;
+    border-radius: 25px;
+    background: rgba(26, 148, 144, 0.527);
+    margin-top: 20px;
+}
+
+#container body #consulta-1 .row-1{
+    display: flex;
+    flex-direction: row;
+}
+
+#container body #consulta-1 .row-2{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;    
+    
+}
+
+.row-2 .consulta-1{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;    
+}
+
+header {
+    padding: 30px 0;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+}
+
+
+#cabecalho{
+    display: flex;
+    
+}
+
+.linkedin {
+    margin-top: -15px;
+    float: left;
+    margin-left: 20px;
+    margin-right: 10px;
+    font-size: 50px;
+}
+
+.github {
+    float: left;
+    margin-left: 20px;
+    margin-right: 10px;
+    font-size: 40px;
+}
+
+.youtube {
+    text-align: center;
+    float: left;
+    margin-left: 20px;
+    margin-right: 10px;
+    font-size: 40px;
+}
+
+.linkedin-cab {
+    margin-left: 5px; 
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+    transition: 0.3s;
+}
+
+.linkedin-cab:hover {
+    color: rgb(8, 19, 146);
+}
+
+#cabecalho h2{
+    float: left;
+}
+
+.link-href{   
+    margin-left: 5px; 
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+    transition: 0.3s;
+}
+
+.link-href-yt{
+    margin-left: 15px; 
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+    transition: 0.3s;
+}
+
+.link-href:hover{
+    color: #535858;
+}
+
+.link-href-yt:hover{
+    color: red;
+}
+
+.youtube:hover{
+    color: red;
+}
+
+
+.text-consulta{
+    color: white;
+    margin-left: 18px;
+    margin-top: 20 px;
+}
+
+.input-1{
+    text-align: left;
+    width: 80%;
+}
+
+.input-2{
+    width: 15%;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.input-3{
+    margin-left: 5px;
+    text-align: left;
+    width: 20%;        
+}
+
+.input-select{    
+    font-size: 24px;
+    height: 60px;
+    border-radius: 10px;
+    margin-left: 5px;
+    text-align: left;
+    width: 20%;
+    margin-top: 15px;
+    
+}
+
+.input-select-2{    
+    font-size: 24px;
+    height: 60px;
+    border-radius: 10px;
+    margin-left: 5px;
+    text-align: left;
+    width: 20%;
+    margin-top: 15px;
+    
+}
+
+#lista-1{  
+    margin-top: 10px;      
+    width: 1080px;
+    border: #000 solid 3px;
+    border-radius: 8px;
+}
+
+#lista-1 table{
+    width: 100%;
+
+}
+
+#lista-1 table th{
+    border-bottom: #000 1px solid;    
+}
+
+#lista-1 table th,td{
+    width: 16.5%;    
+    font-size: 22px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+table {
+    border-radius: 8px;
+}
+
+li{
+    list-style-type: none;
+    display: flex;
+}
+
+.nav-page{
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-page h3{
+    margin: 0 auto;
+}
+
+.nav-page .button-next{
+    background-color: transparent;
+    border: 0px;
+    transition: 0.4s;
+}
+
+.nav-page .button-next:hover{
+    color: #535858;
+}
+
+.nav-page .button-previous{
+    background-color: transparent;
+    border: 0px;
+    transition: 0.4s;
+}
+
+.nav-page .button-previous:hover{
+    color: #535858;
+}
+
+.image-empresa{
+   width: 20%;
+   float: right;
+   border-radius: 10px;
+   margin: 5px 5px;
+   margin-top: 20px;
+   margin-right: 20px;
+}
+
+.empresa-alterar{
+    width: 50%;
+    float: left;    
+    margin-top: 20px;
+    margin-left: 60px;
+}
+
+.empresa-alterar input{
+    width: 90%;
+    border-radius: 10px;
+    height: 55px;
+    margin-top: 5px;
+}
+
+.empresa-alterar .disabled-input{
+    background: rgba(255, 255, 255, 0.572);
+}
+
+.empresa-alterar button{
+    margin-top: 10px;
+    border: none;
+    height: 50px;
+    background-color: #251FC5;
+    color: #FFF;
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+.clear{    
+    clear: both;
+}
+
+.empresa-alterar-2 select{
+    width: 35%;
+    float: right;
+    margin-right: 20px ;
+}
+
+.empresa-alterar-2 button{
+    margin-top: 10px;
+    margin-right: 20px;
+    border: none;
+    height: 50px;
+    background-color: #251FC5;
+    color: #FFF;
+    width: 30%;
+    margin-bottom: 10px;
+    float: right;
+}
+
+.empresa-alterar-2 button:hover{
+    background: #090835;
+    color: black;
+}
+
+.empresa-alterar-2 input{
+    float: right;
+    width: 30%;
+    border-radius: 10px;
+    height: 55px;
+    margin-right: 25px;
+    margin-top: 5px;
+}
+
+.empresa-alterar-2 .disabled-input{
+    margin-top: 20px;
+    text-align: left;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.572);
+}
+
+
+.input-button-5{
+    width: 15%;
+    font-size: 18px;    
+    height: 38px;
+    border: none;
+    background-color: blue;
+    color: white;    
+    transition: 0.4s;
+    
+}
+
+.input-button-5:hover{
+    background-color: #090835;
+    color: rgb(135, 135, 135);
+}
+
+.input-button-6:hover{
+    background-color: #090835;
+    color: rgb(135, 135, 135);
+}
+
+.input-button-6{
+    width: 80%;
+    font-size: 18px;    
+    height: 38px;
+    border: none;
+    background-color: blue;
+    color: white;    
+    
+}
+
+.link-cardapio{
+    color: black;
+}
+
+.link-cardapio:hover{
+    color: rgb(255, 255, 255);
+}
+
+.input-5{
+    justify-content: center;
+    width: 60%;
+    margin-left: 20px;    
+    display: none
+}
+
+  
+  /* Aparência que terá o seletor de arquivo */
+  label {
+    margin-top: 8px;
+    width: 30%;   
+    height: 60px;
+    margin-left: 20px;    
+    background-color: blue;
+    border-radius: 10px;
+    color: #fff;
+    justify-content: center; 
+    cursor: pointer;    
+    text-align: center;
+    font-size: 20px;
+    padding-top: 15px;
+
+  }
+
+  .arquivo-selecao{
+      margin-left: 10px;
+      font-size: 1.3em;
+
+  }
+
+
+  .input-select-3{
+    font-size: 14px;
+    height: 60px;
+    border-radius: 10px;
+    margin-left: 5px;
+    text-align: left;
+    width: 20%;
+    margin-top: 15px;
+  }
+
+  .input-select-4{
+    font-size: 14px;
+    height: 55px;
+    border-radius: 10px;
+    margin-left: 0px;
+    text-align: left;
+    width: 90%;
+    margin-top: 5px;
+  }
+
+  .load-1{        
+      margin-top: 10px;      
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .texto-bemvindo{
+      margin-left: 10%;
+      margin-top: 5px;
+  }
+
+  .button-sair{
+      font-size: 12px;
+      margin-left: 15px;
+      margin-top: 7px;
+      border: none;
+      width: 5%;
+      height: 20px;
+      background-color: #251FC5;
+      color: white;
+  }
+
+  .button-sair:hover{
+    background-color: #090835;
+    color: rgb(135, 135, 135);
+  }
+
+  .button-voltar{
+    font-size: 12px;
+    margin-left: 60px;
+    margin-top: 7px;
+    border: none;
+    width: 10%;
+    height: 20px;
+    background-color: #251FC5;
+    color: white;
+  }

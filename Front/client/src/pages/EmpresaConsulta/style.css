@@ -1,0 +1,75 @@
+
+body{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background: rgb(63,94,251);
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(149,228,50,1) 100%);
+}
+
+.container{
+    width: 400px;
+    height: 300px;
+    background-color: rgba(255, 255, 255, 0.5);    
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 120px;
+    text-align: center;
+}
+
+.container .perfil  {
+    width: 120px;
+    height: 120px;
+    margin-top: -60px;
+    margin-bottom: 30px;
+}
+
+.container .logo  {
+    width: 250px;
+    height: 250px;
+    margin-top: 50px;
+}
+
+input{
+    width: 40px;
+    width: 80%;
+    font-size: 18px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    padding-left: 40px;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+}
+
+input.email{
+    background-image: url(../../assets/icone-usuario.png);
+}
+
+
+input.senha{
+    background-image: url(../../assets/icone-cadeado.png);
+}
+
+input.submit{
+    color: #fff;
+    background-color: #7ace1b;
+    border: 2px solid #00db6e;
+    padding: 5px 20px;
+    height: 45px;
+    width: 90%;
+    cursor: pointer;
+
+    background: linear-gradient(to bottom, #215304, #00f6e2);
+}
+
+input.submit:hover {
+    filter: brightness(80%);
+}
+
+#deletar .input-button-4:hover{
+    background: red;
+}
