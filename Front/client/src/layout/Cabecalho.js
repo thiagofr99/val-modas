@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory} from "react-router-dom";
+import { useHistory} from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons'
@@ -29,14 +29,7 @@ export default function Cabechalho(){
             <header>
                 <nav>
                     <ul>
-                        <li>
-                            <Link className="active" to="/usuario"> 
-                                Usuarios
-                            </Link>     
-                            </li>
-                            <li> <Link to="/empresa"> 
-                                Empresas
-                            </Link>     
+                        <li>                           
                         </li>                        
                     </ul>                
                     <div id="cabecalho" className="flex">
@@ -46,7 +39,7 @@ export default function Cabechalho(){
                         </a>       
                         <h3 className="texto-bemvindo">Seja bem vindo {usuarioLogado+" - "+cargo}</h3>     
                         <button className="button-sair" onClick={logout}> Sair </button>            
-                        <button className="button-voltar" onClick={voltar}> {"<< "+ "Voltar"}</button>        
+                        <button className="button-voltar" onClick={voltar}> {"<< Voltar"}</button>        
                     </div>
                     
                 </nav>

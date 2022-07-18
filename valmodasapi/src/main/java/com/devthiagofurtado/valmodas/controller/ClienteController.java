@@ -22,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
-@Api(tags = "FornecedorEndPoints")
+@Api(tags = "ClienteEndPoints")
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {

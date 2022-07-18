@@ -59,7 +59,7 @@ export default function Login() {
   };
 
     return (
-    <div className="container">
+    <div className="containerPrincipal">
         {loadOn? <Loading></Loading>:
           <div>
             <section className='form'>

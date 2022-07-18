@@ -1,6 +1,7 @@
 import React from 'react';
 import {ToastContainer} from 'react-toastify'
 
+
 import './global.css';
 
 import Routes from './routes'
@@ -11,7 +12,7 @@ export default function App() {
       <Routes/>
       <ToastContainer
       theme="colored"
-      />
+      />      
     </div>
   );
 }

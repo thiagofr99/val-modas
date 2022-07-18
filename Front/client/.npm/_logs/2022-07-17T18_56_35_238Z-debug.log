@@ -1,0 +1,23 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'stop' ]
+2 info using npm@6.14.15
+3 info using node@v14.18.1
+4 verbose config Skipping project config: /home/client/.npmrc. (matches userconfig)
+5 verbose stack Error: missing script: stop
+5 verbose stack     at run (/usr/local/lib/node_modules/npm/lib/run-script.js:155:19)
+5 verbose stack     at /usr/local/lib/node_modules/npm/lib/run-script.js:63:5
+5 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:116:5
+5 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:436:5
+5 verbose stack     at checkBinReferences_ (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:391:45)
+5 verbose stack     at final (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:434:3)
+5 verbose stack     at then (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:161:5)
+5 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:281:12
+5 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:123:16
+5 verbose stack     at FSReqCallback.readFileAfterClose [as oncomplete] (internal/fs/read_file_context.js:71:3)
+6 verbose cwd /home/client
+7 verbose Linux 5.10.16.3-microsoft-standard-WSL2
+8 verbose argv "/usr/local/bin/node" "/usr/local/bin/npm" "stop"
+9 verbose node v14.18.1
+10 verbose npm  v6.14.15
+11 error missing script: stop
+12 verbose exit [ 1, true ]

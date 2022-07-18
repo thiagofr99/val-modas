@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import api from '../../services/api'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLinkedin, faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons'
 import Loading from '../../layout/Loading';
 import Cabechalho from "../../layout/Cabecalho";
 
@@ -44,7 +44,7 @@ export default function Usuario(){
 
     
         
-    },[]);
+    },[accessToken]);
 
     async function salvar(e){
         e.preventDefault();

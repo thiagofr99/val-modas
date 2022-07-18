@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import { Link, useHistory, useParams} from "react-router-dom";
+import { useHistory, useParams} from "react-router-dom";
 
 import './style.css';
 
@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLinkedin, faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons'
 
 import Loading from '../../layout/Loading';
 import Cabechalho from "../../layout/Cabecalho";
@@ -28,9 +28,7 @@ export default function UsuarioConsulta(){
 
     const [loadOn, setLoadOn] = useState(false);
     
-    const accessToken = sessionStorage.getItem('accessToken');    
-    const usuarioLogado = sessionStorage.getItem('username');    
-    const cargo = sessionStorage.getItem('permission');    
+    const accessToken = sessionStorage.getItem('accessToken');            
 
     const history = useHistory();
 
@@ -39,7 +37,7 @@ export default function UsuarioConsulta(){
 
         try{
     
-            const response = await api.get('auth/findAllByUserName',{                
+            await api.get('auth/findAllByUserName',{                
               headers:{
                   Authorization: `Bearer ${accessToken}`
               },
@@ -109,17 +107,27 @@ export default function UsuarioConsulta(){
 
     }  
 
-    async function logout(){
-        sessionStorage.setItem('username', '');
-        sessionStorage.setItem('accessToken', '');
-        sessionStorage.setItem('permission', '');
-        history.push(`/`);        
-    }
  
     useEffect(()=> {
         try{
             setLoadOn(true)
-            buscarTodosPorNome();
+
+            api.get('auth/findAllByUserName',{                
+                headers:{
+                    Authorization: `Bearer ${accessToken}`
+                },
+                params: {
+                  userName:  nome === undefined ? '' :  nome,
+                  page: 0,
+                  limit: 10,
+                  direction: 'asc'
+                }
+              }).then(responses=> {
+                  setUsers(responses.data._embedded.usuarioVoes);
+                  setPaginacao(responses.data.page);
+                  setTotalPages(responses.data.page.totalPages);
+              })          
+
             toast.success('Busca realizada com sucesso.', {
                 position: toast.POSITION.TOP_CENTER
               })
@@ -133,7 +141,7 @@ export default function UsuarioConsulta(){
         }
         
         
-    },[]);
+    },[accessToken, history, nome]);
 
     return (
         <div id="container">
@@ -166,7 +174,7 @@ export default function UsuarioConsulta(){
                 <div className="nav-page">
                         {page===0 ? '' : <button className="button-previous" onClick={anteriorPage}>{'<<Anterior'}</button>}      
                         <h3>{page+1}</h3> 
-                        { page+1== totalPages ? '': <button className="button-next" onClick={proximaPage}>{'Próxima>>'}</button>} 
+                        { page+1 === totalPages ? '': <button className="button-next" onClick={proximaPage}>{'Próxima>>'}</button>} 
                 </div>              
 
             </body>
