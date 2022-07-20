@@ -5,8 +5,7 @@ import logo from '../assets/mae-logo-2.png'
 
 export default function CabechalhoManage(){
     
-    const usuarioLogado = sessionStorage.getItem('username');    
-    const cargo = sessionStorage.getItem('permission'); 
+    const usuarioLogado = sessionStorage.getItem('username');        
     
     const history = useHistory();
 
@@ -23,21 +22,13 @@ export default function CabechalhoManage(){
 
     return (
         <div>
-            <header>
-                <nav>
-                    <ul>                    
-                        <li> 
-                            
-                        </li>                        
-                    </ul>                
-                    <div id="cabecalho" className="flex">
+            <header>                             
+                <div id="cabecalho" className="flex">
                     <img className='logoCabecalho' src={logo} alt="" />
-                        <h3 className="texto-bemvindo">Seja bem vindo {usuarioLogado+" - "+cargo}</h3>     
-                        <button className="button-sair" onClick={logout}> Sair </button>            
-                        <button className="button-voltar" onClick={voltar}> {"<< Voltar"}</button>        
-                    </div>
-                    
-                </nav>
+                    <h3 className="texto-bemvindo">Bem vindo(a) {usuarioLogado}</h3>     
+                    <button className="button-sair" onClick={logout}> Sair </button>            
+                    <button className="button-voltar" onClick={voltar}> {"<< Voltar"}</button>        
+                </div>
             </header>
         </div>
     );

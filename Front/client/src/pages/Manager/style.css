@@ -44,17 +44,6 @@ input.submit:hover {
     margin-top: -10px;
     
 }
-.container-info {
-    background-color: none;    
-    height: 100%;
-    width: 1080px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    
- }
   
  .item {
     background-color: #a90d5ebf;

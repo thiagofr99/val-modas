@@ -8,6 +8,7 @@ import Manager from './pages/Manager';
 import UsuarioConsulta from './pages/UsuarioConsulta';
 import UsuarioTodos from './pages/UsuarioTodos';
 import Produtos from './pages/Produtos';
+import Clientes from './pages/Clientes';
 
 export default function Routes() {
     return (
@@ -17,6 +18,7 @@ export default function Routes() {
                 <Route path="/usuario" exact component={Usuario}/>
                 <Route path="/produtos" exact component={Produtos}/>
                 <Route path="/manager" component={Manager}/>
+                <Route path="/clientes" component={Clientes}/>
                 <Route path='/consulta/:nome' component={UsuarioConsulta}/>
                 <Route path='/todos/' component={UsuarioTodos}/>                
             </Switch>

@@ -15,26 +15,9 @@
 }
 
 .logoCabecalho {
-    width: 15%;
-    margin-left: 20px;
+    width: 10%;
+    margin-left: 10px;
     padding: 0;
     
 
 }
-
-.input-select-menu{
-    overflow:hidden;
-    background: none;
-    width: 200px;
-    /* for Firefox */
-    -moz-appearance: none;
-    /* for Safari, Chrome, Opera */
-    -webkit-appearance: none;
-}
-.option-menu{    
-    -webkit-appearance:none;
-    background-color:rgba(255,0,255,0.3);
-    border: none;
-    width: 200px;
-}
-

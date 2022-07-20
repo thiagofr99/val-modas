@@ -7,8 +7,6 @@ import Loading from '../../layout/Loading';
 
 import api from '../../services/api'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons'
 
 import './style.css';
 import CabechalhoManage from "../../layout/CabecalhoManage";
@@ -27,6 +25,7 @@ export default function Produtos(){
     //Variavel para desativados
     const [ativado, setAtivado] = useState(true);
     const [varVisivel, setVarVisivel] = useState(false);
+    const [editando, setEditando] = useState(false)
 
     //Variaveis produto
     const [id, setId] = useState();
@@ -127,13 +126,15 @@ export default function Produtos(){
     }
 
     async function editar(e){
-        e.preventDefault();
+        e.preventDefault();        
+        setEditando(true);   
         setAtivado(true);
     }
 
     async function buscarProdutosPorId(e){
         e.preventDefault();
-        try{              
+        try{
+                       
             setAtivado(false);   
             await api.get(`produto/${id}`,{                
                 headers:{
@@ -191,10 +192,13 @@ export default function Produtos(){
         setValorCompra('');
         setValorVenda('');
         setCodigoBarra(''); 
+        setId('');
         
         setProdutos([]);
         setVarVisivel(false);
-    
+        setVisao('default');
+        setEditando(false);
+
         } catch (err){
             toast.error('Erro ao salvar produto.', {
                 position: toast.POSITION.TOP_CENTER
@@ -227,8 +231,13 @@ export default function Produtos(){
                 </div>
                 <div>
                     <label for="nome">Nome Produto:</label>
+                </div>
+                <div className="inputs-produtos">
                     <input className="input-produto" type="text" id="nome" name="userName" placeholder="Ex: Calça numero 42, Relógio marca..." value={nomeProduto} onChange={e => setNomeProduto(e.target.value)} />
+                <div>                    
                     <label for="fornecedor">Fornecedor:</label>
+                </div>
+                    
                     { fornecedores.length > 0 ? 
                         <select id="fornecedor" className="input-select-busca" name="select" value={fornecedorId} onChange={e=> setFornecedorId(e.target.value)}>
                                 <option value="">Selecione uma Opção!</option>
@@ -242,15 +251,23 @@ export default function Produtos(){
                 </div>
                 <div>
                     <label for="valorCompra">Valor Compra:</label>
-                    <input className="input-produto" type="number" id="valorCompra" placeholder="Ex: 49,90" value={valorCompra} onChange={e => setValorCompra(e.target.value)}/>
+                    <div className="inputs-produtos">                    
+                        <input className="input-produto" type="number" id="valorCompra" placeholder="Ex: 49,90" value={valorCompra} onChange={e => setValorCompra(e.target.value)}/>
+                    </div>                    
                     <label for="valorVenda">Valor Venda:</label>
-                    <input className="input-produto" type="number" id="valorVenda"  placeholder="Ex: 49,90" value={valorVenda} onChange={e => setValorVenda(e.target.value)}/>
+                    <div className="inputs-produtos">                    
+                        <input className="input-produto" type="number" id="valorVenda"  placeholder="Ex: 49,90" value={valorVenda} onChange={e => setValorVenda(e.target.value)}/>
+                    </div> 
+                    
                 </div>
                 <div>
                     <label for="codigoBarra">Código de Barra:</label>
-                    <input className="input-produto-2" type="number" id="codigoBarra" placeholder="Utilizar leitor ou digite" value={codigoBarra} onChange={e => setCodigoBarra(e.target.value)}/>                   
+                    <div className="inputs-produtos">                    
+                        <input className="input-produto-2" type="number" id="codigoBarra" placeholder="Utilizar leitor ou digite" value={codigoBarra} onChange={e => setCodigoBarra(e.target.value)}/>                   
+                    </div> 
+                    
                 </div>
-                <div>
+                <div className="inputs-produtos">
                 <button className="btn-pdt-cadastrar" onClick={salvar}>Cadastrar</button>
                 </div>
                 </form>                  
@@ -259,11 +276,11 @@ export default function Produtos(){
                 <div>
                 <form>
                 <div className="busca">
-                    <input className="input-busca-produto" type="text" placeholder="Buscar Produtos por nome." value={nomeProdutoBusca} onChange={e => setNomeProdutoBusca(e.target.value)} />
+                    <input className= {editando ? "input-produto-desativado" : "input-busca-produto"}  type="text" placeholder="Buscar Produtos por nome." disabled={editando} value={nomeProdutoBusca} onChange={e => setNomeProdutoBusca(e.target.value)} />
                     <button onClick={ buscarProdutos } className="button-buscar">Buscar</button>                      
                     { produtos.length > 0 ? 
-                        <div>
-                        <select id="produto" className="input-select-busca" name="select" value={id} onChange={e=> setId(e.target.value)}>
+                        <div className="select-produtos">
+                        <select id="produto" className="input-select-busca" name="select" disabled={editando} value={id} onChange={e=> setId(e.target.value)}>
                                 <option value="">Selecione uma Opção!</option>
                                 {produtos.map( p=>(
                                           <option value={p.id}>{p.nomeProduto}</option>                                     
@@ -282,22 +299,36 @@ export default function Produtos(){
                     <div>
                         <div>
                             <label for="nome">Nome Produto:</label>
+                            <div className="inputs-produtos">                    
                             <input className= { ativado ? "input-produto":"input-produto-desativado"}  type="text" id="nome" name="userName" disabled={!ativado} value={nomeProduto} onChange={e => setNomeProduto(e.target.value)} />
+                            </div>
                             <label for="fornecedor">Fornecedor:</label>
+                            <div className="inputs-produtos">                    
                             <input className= { ativado ? "input-produto":"input-produto-desativado"} type="text" id="fornecedor" disabled={!ativado} value={nomeFornecedor} onChange={e => setNomeFornecedor(e.target.value)} />
+                            </div>
                     
                         </div>
                         <div>
                             <label for="valorCompra">Valor Compra:</label>
+                            <div className="inputs-produtos">                    
                             <input className={ ativado ? "input-produto":"input-produto-desativado"} type="number" id="valorCompra" disabled={!ativado} value={valorCompra} onChange={e => setValorCompra(e.target.value)}/>
+                            </div>    
+                            
+                            
                             <label for="valorVenda">Valor Venda:</label>
+                            <div className="inputs-produtos">                    
                             <input className={ ativado ? "input-produto":"input-produto-desativado"} type="number" id="valorVenda"  disabled={!ativado} value={valorVenda} onChange={e => setValorVenda(e.target.value)}/>
+                            </div>    
+                            
                         </div>
                         <div>
                             <label for="codigoBarra">Código de Barra:</label>
+                            <div className="inputs-produtos">                    
                             <input className={ ativado ? "input-produto-2": "input-produto-desativado-2"} type="number" id="codigoBarra" disabled={!ativado} value={codigoBarra} onChange={e => setCodigoBarra(e.target.value)}/>                   
+                            </div>
                         </div>
-                        <div>
+                        <div className="inputs-produtos">                    
+                            
                             <button hidden={!ativado} className="btn-pdt-cadastrar" onClick={salvar}>Salvar</button>
                         </div>
                         </div> : 
@@ -335,7 +366,9 @@ export default function Produtos(){
                 </div>
                 <div>
                     <label for="codigoBarra">Código de Barra:</label>
+                    <div className="inputs-produtos">                    
                     <input className="input-produto-2" type="number" id="codigoBarra" placeholder="Utilizar leitor ou digite" value={codigoBarra} onChange={e => setCodigoBarra(e.target.value)}/>                   
+                    </div>                     
                 </div>
                 <div>
                 <button className="btn-pdt-cadastrar" onClick={salvar}>Cadastrar</button>
@@ -346,23 +379,6 @@ export default function Produtos(){
             
 
             </body>
-            <footer>
-                <div className="dados-pessoais">
-                    <div className="endereco">
-                        <h2> Granja Portugal </h2>
-                        <h3> Fortaleza - CE</h3>  
-                    </div>
-                    <div className="rede-social">                        
-                        <a className="link-href" href="https://github.com/thiagofr99"><FontAwesomeIcon icon={faGithub} className="github" /><h3>/thiagofr99</h3></a> 
-                        <a className="link-href-yt" href="https://www.youtube.com/channel/UCxxFrDeO_yXxRe7EB5aTjfA"><FontAwesomeIcon icon={faYoutube} className="youtube" /><h3>Thiago Furtado</h3></a> 
-                    </div>
-                                   
-                </div>
-                <div className="copyright">
-                        Copyright © www.devthiagofurtado.com 2022
-                    </div> 
-               
-            </footer>
             </div>            
 }
             {dialog.isLoading && (<Dialog
