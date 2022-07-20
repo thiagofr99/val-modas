@@ -29,6 +29,7 @@ export default function Produtos(){
 
     //Variaveis produto
     const [id, setId] = useState();
+    const [estoque, setEstoque] = useState();
     const [nomeProduto, setNomeProduto] = useState('');
     const [valorCompra, setValorCompra] = useState('');
     const [valorVenda, setValorVenda] = useState('');
@@ -145,7 +146,8 @@ export default function Produtos(){
                 setValorCompra(response.data.valorCompra);
                 setValorVenda(response.data.valorVenda);
                 setCodigoBarra(response.data.codigoBarra);  
-                setFornecedorId(response.data.fornecedorId);  
+                setFornecedorId(response.data.fornecedorId); 
+                setEstoque(response.data.estoque);
               })          
             setVarVisivel(true);
             toast.success('Busca realizada com sucesso.', {
@@ -173,7 +175,8 @@ export default function Produtos(){
             valorCompra,
             valorVenda,
             codigoBarra,
-            fornecedorId
+            fornecedorId,
+            estoque
         }
     
         try{

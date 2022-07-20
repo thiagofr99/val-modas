@@ -29,7 +29,7 @@ export default function Manager(){
             <div class="item item1"><button onClick={produtos} className="btn-item">Produtos</button></div>
             <div class="item item2"><button onClick={clientes} className="btn-item">Clientes</button></div>
             <div class="item item3"><button className="btn-item">Fornecedores</button></div>
-            <div class="item item3"><button className="btn-item">Iniciar Venda</button></div>
+            <div class="item item3"><button onClick={vendas} className="btn-item">Iniciar Venda</button></div>
             </div>
 
             </body>                  
