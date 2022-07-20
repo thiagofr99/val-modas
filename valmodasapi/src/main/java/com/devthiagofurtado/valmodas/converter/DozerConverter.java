@@ -1,10 +1,16 @@
 package com.devthiagofurtado.valmodas.converter;
 
 import com.devthiagofurtado.valmodas.data.model.Permission;
+import com.devthiagofurtado.valmodas.data.model.Produto;
+import com.devthiagofurtado.valmodas.data.model.Venda;
 import com.devthiagofurtado.valmodas.data.vo.PermissionVO;
+import com.devthiagofurtado.valmodas.data.vo.ProdutoVO;
 import com.devthiagofurtado.valmodas.data.vo.UsuarioVO;
+import com.devthiagofurtado.valmodas.data.vo.VendaVO;
+import com.devthiagofurtado.valmodas.service.ClienteService;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -76,4 +82,24 @@ public class DozerConverter {
         permission.setDescription(vo.name());
         return permission;
     }
+
+    public static Venda vendaVOToEntity(VendaVO vo) {
+        ClienteService clienteService = new ClienteService();
+        return Venda.builder()
+                .cliente( clienteService.buscarEntityPorId(vo.getClienteId()) )
+                .produtos( vo.getProdutosVOS().stream().map(p-> DozerConverter.parseObject(p, Produto.class)).collect(Collectors.toList()) )
+                .id( vo.getKey() )
+                .build();
+
+    }
+
+    public static VendaVO vendaToVO(Venda venda) {
+        return VendaVO.builder()
+                .clienteId( venda.getCliente().getId() )
+                .produtosVOS( venda.getProdutos().stream().map(p-> DozerConverter.parseObject(p, ProdutoVO.class)).collect(Collectors.toList()) )
+                .key( venda.getId() )
+                .build();
+
+    }
+
 }
