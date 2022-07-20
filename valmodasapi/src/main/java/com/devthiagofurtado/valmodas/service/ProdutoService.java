@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProdutoService {
@@ -35,14 +36,18 @@ public class ProdutoService {
         if (produtoVO.getFornecedorId() != null) {
             produto.setFornecedor(fornecedorService.buscarEntityPorId(produtoVO.getFornecedorId()));
         }
+
         if (produtoVO.getKey() == null) {
             produto.setCadastradoEm(LocalDateTime.now());
             produto.setResponsavelCadastro(userName);
+            produto.setEstoque(true);
         } else {
             produto.setAtualizadoEm(LocalDateTime.now());
             produto.setResponsavelAtualizacao(userName);
 
         }
+
+
         var produtoSalvo = produtoRepository.save(produto);
         return DozerConverter.parseObject(produtoSalvo, ProdutoVO.class);
 
@@ -76,6 +81,20 @@ public class ProdutoService {
 
     private ProdutoVO convertToProdutoVO(Produto produto) {
         return DozerConverter.parseObject(produto, ProdutoVO.class);
+    }
+
+    @Transactional(readOnly = true)
+    public Produto buscarEntityPorId(Long idProduto) {
+        return produtoRepository.findById(idProduto).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void venderProdutos(List<Produto> produtos){
+        produtos.forEach(p->{
+            Produto pdt = buscarEntityPorId(p.getId());
+            pdt.setEstoque(false);
+            produtoRepository.save(pdt);
+        });
     }
 
 }

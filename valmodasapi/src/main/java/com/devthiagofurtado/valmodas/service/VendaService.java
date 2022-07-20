@@ -3,6 +3,7 @@ package com.devthiagofurtado.valmodas.service;
 import com.devthiagofurtado.valmodas.converter.DozerConverter;
 import com.devthiagofurtado.valmodas.data.model.Venda;
 import com.devthiagofurtado.valmodas.data.vo.VendaVO;
+import com.devthiagofurtado.valmodas.exception.ResourceBadRequestException;
 import com.devthiagofurtado.valmodas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -21,12 +22,22 @@ public class VendaService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
+    private ProdutoService produtoService;
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public VendaVO salvar(VendaVO vendaVO, String userName) {
         userService.validarUsuarioAdmGerente(userName);
+        if(vendaVO.getProdutosVOS().isEmpty()){
+            throw new ResourceBadRequestException("Não é possível emitir venda sem produtos.");
+        }
 
-        var venda = DozerConverter.vendaVOToEntity(vendaVO);
+        var cliente = clienteService.buscarEntityPorId(vendaVO.getClienteId());
+        var venda = DozerConverter.vendaVOToEntity(vendaVO, cliente);
 
         if (vendaVO.getKey() == null) {
             venda.setCadastradoEm(LocalDateTime.now());
@@ -37,6 +48,8 @@ public class VendaService {
 
         }
         var vendaSalvo = vendaRepository.save(venda);
+        produtoService.venderProdutos(venda.getProdutos());
+
         return DozerConverter.vendaToVO(vendaSalvo);
 
     }

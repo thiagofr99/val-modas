@@ -36,6 +36,8 @@ public class Produto extends AbstractEntity implements Serializable {
     @Column(name = "valor_compra")
     private Double valorCompra;
 
+    private boolean estoque;
+
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
     private Fornecedor fornecedor;

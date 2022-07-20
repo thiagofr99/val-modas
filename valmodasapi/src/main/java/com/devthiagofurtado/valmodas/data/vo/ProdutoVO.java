@@ -42,4 +42,6 @@ public class ProdutoVO extends ResourceSupport implements Serializable {
     private String responsavelCadastro;
 
     private String responsavelAtualizacao;
+
+    private boolean estoque;
 }

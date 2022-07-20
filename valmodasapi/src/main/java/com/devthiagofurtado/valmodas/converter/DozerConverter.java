@@ -1,8 +1,6 @@
 package com.devthiagofurtado.valmodas.converter;
 
-import com.devthiagofurtado.valmodas.data.model.Permission;
-import com.devthiagofurtado.valmodas.data.model.Produto;
-import com.devthiagofurtado.valmodas.data.model.Venda;
+import com.devthiagofurtado.valmodas.data.model.*;
 import com.devthiagofurtado.valmodas.data.vo.PermissionVO;
 import com.devthiagofurtado.valmodas.data.vo.ProdutoVO;
 import com.devthiagofurtado.valmodas.data.vo.UsuarioVO;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 
-import com.devthiagofurtado.valmodas.data.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
@@ -83,10 +80,10 @@ public class DozerConverter {
         return permission;
     }
 
-    public static Venda vendaVOToEntity(VendaVO vo) {
-        ClienteService clienteService = new ClienteService();
+    public static Venda vendaVOToEntity(VendaVO vo, Cliente cliente) {
+
         return Venda.builder()
-                .cliente( clienteService.buscarEntityPorId(vo.getClienteId()) )
+                .cliente(cliente)
                 .produtos( vo.getProdutosVOS().stream().map(p-> DozerConverter.parseObject(p, Produto.class)).collect(Collectors.toList()) )
                 .id( vo.getKey() )
                 .build();

@@ -4,6 +4,7 @@
 	`codigo_barra` VARCHAR(255) NULL,
 	`valor_venda` DECIMAL(10,2) NOT NULL,
 	`valor_compra` DECIMAL(10,2) NOT NULL,
+	`estoque` BIT NULL,
 	`fornecedor_id` BIGINT(20) DEFAULT NULL,
 	`dt_atualizacao` DATE NULL,
 	`dt_cadastro` DATE NULL,
