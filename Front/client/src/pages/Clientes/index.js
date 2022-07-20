@@ -68,7 +68,7 @@ export default function Clientes(){
         e.preventDefault();
         try{              
                
-            await api.get('cliente/findAllByFornecedorName',{                
+            await api.get('cliente/findAllByClienteName',{                
                 headers:{
                     Authorization: `Bearer ${accessToken}`
                 },

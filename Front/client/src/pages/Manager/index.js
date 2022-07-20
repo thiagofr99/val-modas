@@ -14,7 +14,11 @@ export default function Manager(){
     
     async function clientes(){
         history.push('/clientes');
-    }     
+    }  
+    
+    async function vendas(){
+        history.push('/vendas');
+    }
 
     return(
         <div id="containerPrincipal">
