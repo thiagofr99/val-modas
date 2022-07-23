@@ -1,7 +1,9 @@
 package com.devthiagofurtado.valmodas.service;
 
 import com.devthiagofurtado.valmodas.converter.DozerConverter;
+import com.devthiagofurtado.valmodas.data.model.Produto;
 import com.devthiagofurtado.valmodas.data.model.Venda;
+import com.devthiagofurtado.valmodas.data.vo.PagamentoVO;
 import com.devthiagofurtado.valmodas.data.vo.VendaVO;
 import com.devthiagofurtado.valmodas.exception.ResourceBadRequestException;
 import com.devthiagofurtado.valmodas.repository.VendaRepository;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 public class VendaService {
@@ -28,16 +31,32 @@ public class VendaService {
     @Autowired
     private ProdutoService produtoService;
 
+    @Autowired
+    private PagamentoService pagamentoService;
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public VendaVO salvar(VendaVO vendaVO, String userName) {
         userService.validarUsuarioAdmGerente(userName);
-        if(vendaVO.getProdutosVOS().isEmpty()){
+        if (vendaVO.getProdutosVOS().isEmpty()) {
             throw new ResourceBadRequestException("Não é possível emitir venda sem produtos.");
+        }
+        if (vendaVO.getPagamentoVOS().isEmpty()) {
+            throw new ResourceBadRequestException("Não é possível emitir venda sem forma de pagamento.");
         }
 
         var cliente = clienteService.buscarEntityPorId(vendaVO.getClienteId());
         var venda = DozerConverter.vendaVOToEntity(vendaVO, cliente);
+
+        venda.setSubTotal(venda.getProdutos().stream().mapToDouble(Produto::getValorVenda).sum());
+
+        venda.setValorTotal(venda.getSubTotal() - venda.getDesconto());
+
+        double pagamentosTotal = vendaVO.getPagamentoVOS().stream().mapToDouble(PagamentoVO::getValorPagamento).sum();
+
+        if(venda.getValorTotal()!=pagamentosTotal){
+            throw new ResourceBadRequestException("Não é possível emitir venda, diferença entre total dos produtos e total do pagamento.");
+        }
 
         if (vendaVO.getKey() == null) {
             venda.setCadastradoEm(LocalDateTime.now());
@@ -50,7 +69,14 @@ public class VendaService {
         var vendaSalvo = vendaRepository.save(venda);
         produtoService.venderProdutos(venda.getProdutos());
 
-        return DozerConverter.vendaToVO(vendaSalvo);
+        vendaVO.getPagamentoVOS().forEach(p->{
+            p.setVendaId(vendaSalvo.getId());
+        });
+
+        var pagamentosVOS = vendaVO.getPagamentoVOS().stream().map(p -> pagamentoService.salvar(p,userName)).collect(Collectors.toList());
+
+
+        return DozerConverter.vendaToVO(vendaSalvo, pagamentosVOS);
 
     }
 

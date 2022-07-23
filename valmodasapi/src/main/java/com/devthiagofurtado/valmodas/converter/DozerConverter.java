@@ -1,10 +1,7 @@
 package com.devthiagofurtado.valmodas.converter;
 
 import com.devthiagofurtado.valmodas.data.model.*;
-import com.devthiagofurtado.valmodas.data.vo.PermissionVO;
-import com.devthiagofurtado.valmodas.data.vo.ProdutoVO;
-import com.devthiagofurtado.valmodas.data.vo.UsuarioVO;
-import com.devthiagofurtado.valmodas.data.vo.VendaVO;
+import com.devthiagofurtado.valmodas.data.vo.*;
 import com.devthiagofurtado.valmodas.service.ClienteService;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
@@ -85,16 +82,44 @@ public class DozerConverter {
         return Venda.builder()
                 .cliente(cliente)
                 .produtos( vo.getProdutosVOS().stream().map(p-> DozerConverter.parseObject(p, Produto.class)).collect(Collectors.toList()) )
+                .desconto(vo.getDesconto())
                 .id( vo.getKey() )
                 .build();
 
     }
 
-    public static VendaVO vendaToVO(Venda venda) {
+    public static VendaVO vendaToVO(Venda venda, List<PagamentoVO> pagamentoVOS) {
         return VendaVO.builder()
                 .clienteId( venda.getCliente().getId() )
+                .desconto(venda.getDesconto())
+                .valorTotal(venda.getValorTotal())
+                .subTotal(venda.getSubTotal())
+                .pagamentoVOS(pagamentoVOS)
                 .produtosVOS( venda.getProdutos().stream().map(p-> DozerConverter.parseObject(p, ProdutoVO.class)).collect(Collectors.toList()) )
                 .key( venda.getId() )
+                .build();
+
+    }
+
+    public static Pagamento pagamentoVOToEntity(PagamentoVO vo, Venda venda) {
+
+        return Pagamento.builder()
+                .venda(venda)
+                .formaPagamentos(vo.getFormaPagamentos())
+                .valorPagamento(vo.getValorPagamento())
+                .numeroParcelas(vo.getNumeroParcelas())
+                .id( vo.getKey() )
+                .build();
+
+    }
+
+    public static PagamentoVO pagamentoToVO(Pagamento pagamento) {
+        return PagamentoVO.builder()
+                .vendaId( pagamento.getVenda().getId() )
+                .formaPagamentos(pagamento.getFormaPagamentos())
+                .valorPagamento(pagamento.getValorPagamento())
+                .numeroParcelas(pagamento.getNumeroParcelas())
+                .key( pagamento.getId() )
                 .build();
 
     }
