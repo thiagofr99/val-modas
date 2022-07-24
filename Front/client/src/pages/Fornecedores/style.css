@@ -1,0 +1,155 @@
+.container .perfil  {
+    width: 120px;
+    height: 120px;
+    margin-top: -60px;
+    margin-bottom: 30px;
+}
+
+.container .logo  {
+    width: 250px;
+    height: 250px;
+    margin-top: 50px;
+}
+  
+ .item {
+    background-color: #a90d5ebf;
+    color: #fff;
+    padding: 10px 10px;
+    margin: 15px 15px;
+
+ }
+ 
+ .item1{
+    height: 240px;
+    width: 45%;
+    border-radius: 30px;
+ }
+ 
+ .item2{
+    height: 240px;
+    width: 45%;
+    border-radius: 30px;
+ }
+ 
+ .item3{
+    height: 240px;
+    width: 45%;
+    border-radius: 30px;
+ }
+
+ .btn-item{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    color: white;
+
+ }
+
+ .btn-item:hover{
+    background-color: rgba(203, 151, 255, 0.271);
+    transition: 0.5s;
+    color:rgb(205, 204, 204);
+
+ }
+
+
+ label{
+    background: none;
+ }
+
+ .input-produto{   
+    width: 95%;
+ }
+
+ .input-produto-desativado{   
+   width: 95%;
+   color: gray;
+   background-color: darkgrey;
+}
+
+ .input-produto-2{   
+   width: 95%;
+}
+
+.input-produto-desativado-2{
+   width: 95%;
+   color: gray;
+   background-color: darkgrey;
+}
+ 
+.btn-pdt-cadastrar{
+   margin-top: 10px;   
+   padding: 20px 30px;
+   width: 95%;
+   border: none;
+   background-color: #AF2B76;
+   color: white;
+}
+
+.input-busca-produto{
+   width: 95%;
+   margin-left: 10px;      
+   justify-content: center;
+   text-align: left;
+}
+
+.busca{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   flex-wrap: wrap;
+}
+
+.button-buscar {
+   margin-left: -80px;
+   border: none;
+   background: #AF2B76;   
+   color: #fff;
+   padding: 10px;
+}
+
+.button-editar {
+   margin-left: 5px;
+   border: none;
+   background: #AF2B76;   
+   color: #fff;
+   padding: 10px;
+}
+
+.input-select-busca{
+   font-size: 14px;
+   height: 60px;
+   border-radius: 10px;   
+   text-align: left;
+   width: 100%;
+   margin-top: 15px;
+}
+
+
+.input-select-busca-produtos{
+   font-size: 14px;
+   height: 60px;
+   border-radius: 10px;
+   margin-left: 15px;
+   text-align: left;
+   width: 80%;
+   margin-top: 15px;
+}
+
+.inputs-produtos{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   flex-wrap: wrap;
+}
+
+.select-produtos{   
+   width: 95%;
+   margin-left: 20px;
+   margin-right: 10px;
+}

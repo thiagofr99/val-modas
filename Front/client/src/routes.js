@@ -10,6 +10,7 @@ import UsuarioTodos from './pages/UsuarioTodos';
 import Produtos from './pages/Produtos';
 import Clientes from './pages/Clientes';
 import Vendas from './pages/Vendas';
+import Fornecedores from './pages/Fornecedores';
 
 export default function Routes() {
     return (
@@ -21,6 +22,7 @@ export default function Routes() {
                 <Route path="/manager" component={Manager}/>
                 <Route path="/clientes" component={Clientes}/>
                 <Route path="/vendas" component={Vendas}/>
+                <Route path="/fornecedores" component={Fornecedores}/>
                 <Route path='/consulta/:nome' component={UsuarioConsulta}/>
                 <Route path='/todos/' component={UsuarioTodos}/>                
             </Switch>
