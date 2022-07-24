@@ -89,9 +89,11 @@ public class ProdutoService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void venderProdutos(List<Produto> produtos){
+    public void venderProdutos(List<Produto> produtos, String userName){
         produtos.forEach(p->{
             Produto pdt = buscarEntityPorId(p.getId());
+            pdt.setAtualizadoEm(LocalDateTime.now());
+            pdt.setResponsavelAtualizacao(userName);
             pdt.setEstoque(false);
             produtoRepository.save(pdt);
         });

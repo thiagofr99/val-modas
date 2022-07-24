@@ -26,6 +26,7 @@ public class Pagamento extends AbstractEntity implements Serializable {
     private Long id;
 
     @Column(name = "forma_pagamento")
+    @Enumerated(EnumType.STRING)
     private FormaPagamentos formaPagamentos;
 
     @Column(name = "valor_pagamento")

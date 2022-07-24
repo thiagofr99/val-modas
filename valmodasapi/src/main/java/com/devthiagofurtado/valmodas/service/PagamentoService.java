@@ -3,6 +3,7 @@ package com.devthiagofurtado.valmodas.service;
 import com.devthiagofurtado.valmodas.converter.DozerConverter;
 import com.devthiagofurtado.valmodas.data.model.Pagamento;
 import com.devthiagofurtado.valmodas.data.vo.PagamentoVO;
+import com.devthiagofurtado.valmodas.exception.ResourceBadRequestException;
 import com.devthiagofurtado.valmodas.repository.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -31,6 +32,23 @@ public class PagamentoService {
 
         var venda = vendaService.buscarEntityPorId(pagamentoVO.getVendaId());
         var pagamento = DozerConverter.pagamentoVOToEntity(pagamentoVO, venda);
+
+        switch (pagamento.getFormaPagamentos()){
+            case DINHEIRO:
+            case PROMISSORIA:
+                pagamento.setNumeroParcelas(0);
+                break;
+            case CARTAO_A_VISTA:
+                pagamento.setNumeroParcelas(1);
+                break;
+            case CARTAO_A_PRAZO:
+                if(pagamento.getNumeroParcelas()<=1){
+                    throw new ResourceBadRequestException("Quantidades de parcelas indevidas para pagamento a prazo.");
+                }
+                break;
+            default:
+                throw new ResourceBadRequestException("Forma de pagamento indevida.");
+        }
 
         if (pagamentoVO.getKey() == null) {
             pagamento.setCadastradoEm(LocalDateTime.now());

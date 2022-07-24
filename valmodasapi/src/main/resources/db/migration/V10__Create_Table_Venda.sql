@@ -3,7 +3,7 @@
 	`cliente_id` BIGINT(20) DEFAULT NULL,
 	`valor_total` DECIMAL(10,2) NOT NULL,
 	`desconto` DECIMAL(10,2) NOT NULL,
-	`subTotal` DECIMAL(10,2) NOT NULL,
+	`sub_total` DECIMAL(10,2) NOT NULL,
 	`dt_atualizacao` DATE NULL,
 	`dt_cadastro` DATE NULL,
 	`nu_usuario_atualizacao` VARCHAR(255) NULL,

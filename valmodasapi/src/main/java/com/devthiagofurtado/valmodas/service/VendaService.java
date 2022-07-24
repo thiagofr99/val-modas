@@ -67,7 +67,7 @@ public class VendaService {
 
         }
         var vendaSalvo = vendaRepository.save(venda);
-        produtoService.venderProdutos(venda.getProdutos());
+        produtoService.venderProdutos(venda.getProdutos(), userName);
 
         vendaVO.getPagamentoVOS().forEach(p->{
             p.setVendaId(vendaSalvo.getId());

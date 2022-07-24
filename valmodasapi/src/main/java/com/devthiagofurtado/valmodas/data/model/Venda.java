@@ -34,6 +34,7 @@ public class Venda extends AbstractEntity implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "id_produto")})
     private List<Produto> produtos;
 
+    @Column(name = "sub_total")
     private double subTotal;
 
     @Column(name = "valor_total")
