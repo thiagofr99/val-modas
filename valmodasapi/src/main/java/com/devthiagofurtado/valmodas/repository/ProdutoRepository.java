@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-    @Query("SELECT p FROM Produto p WHERE p.nomeProduto LIKE CONCAT('%',:nome,'%')")
+    @Query("SELECT p FROM Produto p WHERE p.nomeProduto LIKE CONCAT('%',:nome,'%') AND p.estoque = true")
     Page<Produto> findAllByProdutoName(String nome, Pageable pageable);
 
 
