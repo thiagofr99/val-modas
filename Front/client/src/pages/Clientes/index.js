@@ -32,10 +32,13 @@ export default function Clientes(){
     const [nomeCliente, setNomeCliente] = useState('');    
     const [telefone, setTelefone] = useState('');    
 
+    const [vendas,setVendas] = useState([]);
 
     //variavel busca    
     const [nomeClienteBusca, setNomeClienteBusca] = useState('');
     const [clientes, setClientes] = useState([]);
+
+    const[promissoria, setPromissoria] = useState(0);
 
     const [dialog, setDialog] = useState({
         message: "",
@@ -104,13 +107,24 @@ export default function Clientes(){
         try{
                        
             setAtivado(false);   
-            await api.get(`cliente/${id}`,{                
+            await api.get(`cliente/detalhado/${id}`,{                
                 headers:{
                     Authorization: `Bearer ${accessToken}`
                 }
               }).then(response => {
-                setNomeCliente(response.data.nomeCliente);
-                setTelefone(response.data.telefone);                
+                setNomeCliente(response.data.clienteVO.nomeCliente);
+                setTelefone(response.data.clienteVO.telefone);  
+                setVendas(response.data.vendaVOS);   
+                let totalPromissoria = 0;
+                response.data.vendaVOS.map(v=>(
+                    v.pagamentoVOS.map(p=>(
+                        p.formaPagamentos.codigo === 4 ?
+                        totalPromissoria+=p.valorPagamento:
+                        ''
+                    ))
+                    
+                ));
+                setPromissoria(totalPromissoria);                                
               })          
             setVarVisivel(true);
             toast.success('Busca realizada com sucesso.', {
@@ -237,7 +251,57 @@ export default function Clientes(){
                             <input className={ ativado ? "input-produto":"input-produto-desativado"} type="number" id="valorCompra" disabled={!ativado} value={telefone} onChange={e => setTelefone(e.target.value)}/>
                             </div>   
                             
-                        </div>                        
+                        </div>
+                        {
+                            vendas.length>0 ?
+                            <div>
+                                <div  className="texto-vendas">
+                                    <h2>Vendas</h2>
+                                    {
+                                        vendas.map( v=>(
+                                            <div>
+                                                <h3>Produtos Vendidos - Venda número: {v.id} dia { new Intl.DateTimeFormat('pt-BR').format(new Date(v.cadastradoEm) ) }</h3>
+                                                {v.produtosVOS.map(p=>(
+                                                    <div>
+                                                        <p>{p.nomeProduto +"  "+ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valorVenda)}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                        )
+
+                                        )
+                                    }
+
+                                </div>
+                                <div  className="texto-vendas">
+                                    <h2>Promissoras</h2>
+                                    {
+                                        vendas.map( v=>(
+                                            <div>                                                
+                                                {
+                                                    v.pagamentoVOS.map(p=>(
+                                                        <div>
+                                                            {p.formaPagamentos.codigo === 4 ?                                                            
+                                                                <p>{"Venda: "+p.vendaId+ " valor em promissória: "+  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valorPagamento)}</p>
+                                                            :''
+                                                            }                                                            
+                                                        </div>
+                                                    ))
+                                                }                                                
+                                            </div>
+                                        ))
+                                        
+                                    }
+                                    {"Total: "+promissoria}                                    
+                                </div>
+                                
+                            </div>
+                            
+
+                            :''
+                                
+                        }                        
                         <div className="inputs-produtos">                    
                             
                             <button hidden={!ativado} className="btn-pdt-cadastrar" onClick={salvar}>Salvar</button>

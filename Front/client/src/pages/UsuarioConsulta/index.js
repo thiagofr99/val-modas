@@ -159,13 +159,19 @@ export default function UsuarioConsulta(){
                         <th>Data Licença</th>
                         <th>Ações</th>
                     </tr>
-                    {users.map( p=>(
+                    {users.map( p=>(                    
                     <tr key={p.id}>
                         <td> {p.userName} </td>
                         <td> {p.fullName} </td>
                         <td>{p.permissions.at(0).descricao}</td>
                         <td>{ p.dateLicense===null || p.dateLicense==='' ? 'Licença Permanente': p.dateLicense }</td>
-                        <td>{ p.dateLicense===null || p.dateLicense==='' || new Date(p.dateLicense) >= Date.now() ? '':<button onClick={()=> renovar(p.id)} className="input-button-3" type="submit" >Renovar</button>} </td>
+                        <td>{ p.dateLicense===null || p.dateLicense==='' || new Date(p.dateLicense) >= Date.now() ? 
+                        <button onClick={()=> renovar(p.id)} className="input-button-3" type="submit" >Alterar Senha</button>:
+                        <div>
+                            <button onClick={()=> renovar(p.id)} className="input-button-3" type="submit" >Alterar Senha</button>
+                            <button onClick={()=> renovar(p.id)} className="input-button-3" type="submit" >Renovar</button>
+                        </div>}
+                        </td>
                     </tr>
                                 ))}
                     

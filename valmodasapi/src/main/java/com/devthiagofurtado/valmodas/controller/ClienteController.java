@@ -60,6 +60,15 @@ public class ClienteController {
         return new ResponseEntity<>(clienteService.buscarPorId(id, user), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Procura um cliente detalhado por id")
+    @GetMapping(value = "/detalhado/{id}", produces = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity buscaDetalhadoPorId(@PathVariable(value = "id") Long id) {
+        String token = HeaderUtil.obterToken();
+        String user = tokenProvider.getUsername(token.substring(7, token.length()));
+
+        return new ResponseEntity<>(clienteService.buscarDetalhadoPorId(id, user), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Busca fornecedores por nome ou parte do nome.")
     @GetMapping(value = {"/findAllByClienteName"}, produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<?> buscarTodosPorFornecedorNome(@RequestParam(value = "page", defaultValue = "0") int page,

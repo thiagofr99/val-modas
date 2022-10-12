@@ -1,6 +1,7 @@
 package com.devthiagofurtado.valmodas.service;
 
 import com.devthiagofurtado.valmodas.converter.DozerConverter;
+import com.devthiagofurtado.valmodas.data.model.Cliente;
 import com.devthiagofurtado.valmodas.data.model.Produto;
 import com.devthiagofurtado.valmodas.data.model.Venda;
 import com.devthiagofurtado.valmodas.data.vo.PagamentoVO;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,7 +56,7 @@ public class VendaService {
 
         double pagamentosTotal = vendaVO.getPagamentoVOS().stream().mapToDouble(PagamentoVO::getValorPagamento).sum();
 
-        if(venda.getValorTotal()!=pagamentosTotal){
+        if (venda.getValorTotal() != pagamentosTotal) {
             throw new ResourceBadRequestException("Não é possível emitir venda, diferença entre total dos produtos e total do pagamento.");
         }
 
@@ -69,11 +71,11 @@ public class VendaService {
         var vendaSalvo = vendaRepository.save(venda);
         produtoService.venderProdutos(venda.getProdutos(), userName);
 
-        vendaVO.getPagamentoVOS().forEach(p->{
+        vendaVO.getPagamentoVOS().forEach(p -> {
             p.setVendaId(vendaSalvo.getId());
         });
 
-        var pagamentosVOS = vendaVO.getPagamentoVOS().stream().map(p -> pagamentoService.salvar(p,userName)).collect(Collectors.toList());
+        var pagamentosVOS = vendaVO.getPagamentoVOS().stream().map(p -> pagamentoService.salvar(p, userName)).collect(Collectors.toList());
 
 
         return DozerConverter.vendaToVO(vendaSalvo, pagamentosVOS);
@@ -88,23 +90,20 @@ public class VendaService {
         return DozerConverter.parseObject(venda, VendaVO.class);
     }
 
-    /*
-        @Transactional(readOnly = true)
-        public Page<ClienteVO> buscarPorNomeOuParteDoNome(String busca, Pageable pageable, String userName) {
-            userService.validarUsuarioAdmGerente(userName);
-
-            var page = vendaRepository.findAllByClienteName(busca, pageable);
-
-            return page.map(this::convertToFornecedorVO);
-        }
-    */
     private VendaVO convertToVendaVO(Venda venda) {
-        return DozerConverter.parseObject(venda, VendaVO.class);
+        var pagamentosVO = pagamentoService.buscarPorVenda(venda);
+        return DozerConverter.vendaToVO(venda, pagamentosVO);
     }
 
     @Transactional(readOnly = true)
     public Venda buscarEntityPorId(Long idVenda) {
         return vendaRepository.findById(idVenda).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
+    }
+
+    @Transactional(readOnly = true)
+    public List<VendaVO> listarVendasPorCliente(Cliente cliente) {
+
+        return vendaRepository.findAllByCliente(cliente).stream().map(this::convertToVendaVO).collect(Collectors.toList());
     }
 
 }

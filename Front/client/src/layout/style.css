@@ -15,9 +15,14 @@
 }
 
 .logoCabecalho {
-    width: 10%;
-    margin-left: 10px;
-    padding: 0;
-    
+    width: 20%;
 
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .button-voltar{
+        visibility: hidden;
+        position: absolute;
+    }
 }

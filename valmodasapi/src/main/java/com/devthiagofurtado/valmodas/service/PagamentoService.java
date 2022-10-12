@@ -2,6 +2,7 @@ package com.devthiagofurtado.valmodas.service;
 
 import com.devthiagofurtado.valmodas.converter.DozerConverter;
 import com.devthiagofurtado.valmodas.data.model.Pagamento;
+import com.devthiagofurtado.valmodas.data.model.Venda;
 import com.devthiagofurtado.valmodas.data.vo.PagamentoVO;
 import com.devthiagofurtado.valmodas.exception.ResourceBadRequestException;
 import com.devthiagofurtado.valmodas.repository.PagamentoRepository;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PagamentoService {
@@ -62,6 +65,11 @@ public class PagamentoService {
 
         return DozerConverter.pagamentoToVO(pagamentoSalvo);
 
+    }
+    @Transactional(readOnly = true)
+    public List<PagamentoVO> buscarPorVenda(Venda venda) {
+
+        return pagamentoRepository.findAllByVenda(venda).stream().map(DozerConverter::pagamentoToVO).collect(Collectors.toList());
     }
 
 

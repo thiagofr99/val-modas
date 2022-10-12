@@ -66,6 +66,7 @@ public class DozerConverter {
                                 p-> PermissionVO.retornar(p.getId().intValue())
                         ).collect(Collectors.toList())
                 )
+                .dateLicense(user.getDateLicense())
                 .enabled(true)
                 .build();
     }
@@ -90,6 +91,10 @@ public class DozerConverter {
 
     public static VendaVO vendaToVO(Venda venda, List<PagamentoVO> pagamentoVOS) {
         return VendaVO.builder()
+                .cadastradoEm(venda.getCadastradoEm())
+                .atualizadoEm(venda.getAtualizadoEm())
+                .responsavelCadastro(venda.getResponsavelCadastro())
+                .responsavelAtualizacao(venda.getResponsavelAtualizacao())
                 .clienteId( venda.getCliente().getId() )
                 .desconto(venda.getDesconto())
                 .valorTotal(venda.getValorTotal())

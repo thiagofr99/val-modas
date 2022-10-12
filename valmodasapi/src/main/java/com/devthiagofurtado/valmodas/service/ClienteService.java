@@ -2,6 +2,7 @@ package com.devthiagofurtado.valmodas.service;
 
 import com.devthiagofurtado.valmodas.converter.DozerConverter;
 import com.devthiagofurtado.valmodas.data.model.Cliente;
+import com.devthiagofurtado.valmodas.data.vo.ClienteDetalhadoVO;
 import com.devthiagofurtado.valmodas.data.vo.ClienteVO;
 import com.devthiagofurtado.valmodas.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class ClienteService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private VendaService vendaService;
 
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -67,6 +71,22 @@ public class ClienteService {
     @Transactional(readOnly = true)
     public Cliente buscarEntityPorId(Long idCliente) {
         return clienteRepository.findById(idCliente).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
+    }
+
+    @Transactional(readOnly = true)
+    public ClienteDetalhadoVO buscarDetalhadoPorId(Long idCliente, String userName) {
+        userService.validarUsuarioAdmGerente(userName);
+        var cliente = clienteRepository.findById(idCliente).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
+
+        var vendasVo = vendaService.listarVendasPorCliente(cliente);
+
+        var clienteVo = DozerConverter.parseObject(cliente, ClienteVO.class);
+
+
+        return ClienteDetalhadoVO.builder()
+                .clienteVO(clienteVo)
+                .vendaVOS(vendasVo)
+                .build();
     }
 
 }

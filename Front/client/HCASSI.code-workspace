@@ -1,0 +1,42 @@
+{
+	"folders": [
+		{
+			"name": "hcassi (vfs)",
+			"uri": "ngin-vfs://hcassi/"
+		},
+		{
+			"name": "cbptreinamento (vfs)",
+			"uri": "ngin-vfs://cbptreinamento/"
+		}
+	],
+	"settings": {
+		"ngin.databases": [
+			{
+				"name": "hcassi",
+				"serverAddress": "https://hcassi.salutis.com.br",
+				"userName": "tfurtado",
+				"main": true,
+				"enabled": false,
+				"dirty": false,
+				"requestedScope": "api.dev-tools api.classes api.dev-tools.remoteCodeExecution",
+				"authorizedScope": "api.dev-tools api.classes api.dev-tools.remoteCodeExecution",
+				"runtime": "",
+				"group": "",
+				"order": 10
+			},
+			{
+				"name": "cbptreinamento",
+				"serverAddress": "http://170.84.17.131:8082",
+				"userName": "sltthiagofurtado",
+				"main": false,
+				"enabled": true,
+				"dirty": false,
+				"requestedScope": "api.dev-tools api.classes api.dev-tools.remoteCodeExecution",
+				"authorizedScope": "api.dev-tools api.classes api.dev-tools.remoteCodeExecution",
+				"runtime": "",
+				"group": "",
+				"order": 20
+			}
+		]
+	}
+}

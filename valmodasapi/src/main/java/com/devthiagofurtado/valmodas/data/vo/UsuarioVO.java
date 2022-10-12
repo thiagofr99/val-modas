@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -26,6 +27,8 @@ public class UsuarioVO extends ResourceSupport implements Serializable {
     private String fullName;
 
     private String password;
+
+    private LocalDate dateLicense;
 
     private Boolean enabled;
 

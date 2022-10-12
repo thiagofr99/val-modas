@@ -8,7 +8,6 @@ import Loading from '../../layout/Loading';
 
 import api from '../../services/api'
 
-
 import './style.css';
 import CabechalhoManage from "../../layout/CabecalhoManage";
 import Dialog from "../../layout/DialogConfirm";
@@ -357,7 +356,7 @@ export default function Vendas(){
 
                         <div>                         
                             <label for="valorVenda">Valor total da Venda:</label>
-                            <div className="inputs-produtos">                    
+                            <div className="inputs-produtos">                                                    
                                 <input className="input-produto-desativado" disabled type="number" value={valorTotal}/>
                             </div> 
                             

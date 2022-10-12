@@ -546,20 +546,22 @@ li{
   }
   
   .texto-bemvindo{
-      margin-left: 10%;
+      margin-left: 5%;
       margin-top: 5px;
   }
 
   .button-sair{
-      font-size: 12px;
-      margin-left: 15px;
+      font-size: 0.8em;
+      margin-left: 2%;
       margin-top: 7px;
       border: none;
+      border-radius: 5px;
       padding: 5px;
-      width: 10%;
+      width: 8%;
       height: 20px;
       background-color: #AF2B76;
       color: white;
+      text-align: center;
   }
 
   .button-sair:hover{
@@ -568,7 +570,7 @@ li{
   }
 
   .button-voltar{
-    font-size: 12px;
+    font-size: 0.5em;
     margin-left: 60px;
     margin-top: 7px;
     border: none;
@@ -593,4 +595,26 @@ li{
     align-items: center;
     flex-wrap: nowrap;
     
+ }
+
+ .texto-vendas{
+    margin-top: 3%;
+    color: white;
+    text-align: center;
+    font-size: 1.3em;
+ }
+
+ .texto-vendas h2{
+    background-color: #621942;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+ }
+ .texto-vendas h3{
+    background-color: #e7b2e4;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+ }
+
+ .texto-vendas p{
+    padding: 5px;
  }
