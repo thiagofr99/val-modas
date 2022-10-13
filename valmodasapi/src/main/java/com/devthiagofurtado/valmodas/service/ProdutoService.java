@@ -58,7 +58,9 @@ public class ProdutoService {
     public ProdutoVO buscarPorId(Long idProduto, String userName) {
         userService.validarUsuarioAdmGerente(userName);
         var produto = produtoRepository.findById(idProduto).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
-        return DozerConverter.parseObject(produto, ProdutoVO.class);
+        var produtoVO = DozerConverter.parseObject(produto, ProdutoVO.class);
+        produtoVO.setFornecedorId(produto.getFornecedor().getId());
+        return produtoVO;
     }
 
     @Transactional(readOnly = true)
