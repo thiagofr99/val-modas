@@ -203,7 +203,7 @@ export default function Fornecedores(){
                 <div>
                 <form>
                 <div className="busca">
-                    <input className= {editando ? "input-produto-desativado" : "input-busca-produto"}  type="text" placeholder="Buscar Clientes por nome." disabled={editando} value={nomeFornecedorBusca} onChange={e => setNomeFornecedorBusca(e.target.value)} />
+                    <input className= {editando ? "input-produto-desativado" : "input-busca-produto"}  type="text" placeholder="Buscar Fornecedores por nome." disabled={editando} value={nomeFornecedorBusca} onChange={e => setNomeFornecedorBusca(e.target.value)} />
                     <button onClick={ buscarFornecedores } className="button-buscar">Buscar</button>                      
                     { fornecedores.length > 0 ? 
                         <div className="select-produtos">
