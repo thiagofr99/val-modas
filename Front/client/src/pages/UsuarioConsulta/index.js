@@ -27,6 +27,14 @@ export default function UsuarioConsulta(){
     const [totalPages, setTotalPages] = useState();
 
     const [loadOn, setLoadOn] = useState(false);
+
+    const [tela, setTela] = useState('main');
+
+    //Usuarios dados
+    const [user, setUser] = useState();
+    const [password, setPassword] = useState();
+     
+
     
     const accessToken = sessionStorage.getItem('accessToken');            
 
@@ -105,7 +113,49 @@ export default function UsuarioConsulta(){
               setLoadOn(false);
           }
 
-    }  
+    }
+
+    async function alterarTela(param){
+        setTela(param.telaAtiva);
+        setUser(param.usuario);
+
+    }
+    
+    async function salvarUsuario(e){
+        e.preventDefault();
+        setLoadOn(true);        
+        
+        const data = {
+            id : user.id,
+            userName : user.userName,
+            fullName : user.fullName,
+            password,
+            permissions : [ user.permissions.at(0).valorEnum],
+            dateLicense : user.dateLicense
+        }
+    
+        try{
+    
+          await api.post('auth/salvar',data,{
+            headers:{
+                Authorization: `Bearer ${accessToken}`
+            }
+          });
+            
+          toast.success('Senha alterada com sucesso.', {
+            position: toast.POSITION.TOP_CENTER
+          })
+        setLoadOn(false);
+        history.push(`/usuario/`);
+    
+        } catch (err){
+            toast.error('Erro ao alterar senha.', {
+                position: toast.POSITION.TOP_CENTER
+              })
+              setLoadOn(false);
+        }
+    
+      };
 
  
     useEffect(()=> {
@@ -149,7 +199,8 @@ export default function UsuarioConsulta(){
             <div>
             <Cabechalho></Cabechalho>
             <body>                
-            
+            {tela === 'main' ?
+            <div>
                 <div id="lista-1">
                 <table>
                     <tr>
@@ -166,22 +217,39 @@ export default function UsuarioConsulta(){
                         <td>{p.permissions.at(0).descricao}</td>
                         <td>{ p.dateLicense===null || p.dateLicense==='' ? 'Licença Permanente': p.dateLicense }</td>
                         <td>{ p.dateLicense===null || p.dateLicense==='' || new Date(p.dateLicense) >= Date.now() ? 
-                        <button onClick={()=> renovar(p.id)} className="input-button-3" type="submit" >Alterar Senha</button>:
+                        <button onClick={()=> alterarTela({telaAtiva:'alterarSenha', usuario: p})} className="input-button-3" type="submit" >Alterar Senha</button>:
                         <div>
-                            <button onClick={()=> renovar(p.id)} className="input-button-3" type="submit" >Alterar Senha</button>
+                            <button onClick={()=> alterarTela({telaAtiva:'alterarSenha', usuario: p})} className="input-button-3" type="submit" >Alterar Senha</button>
                             <button onClick={()=> renovar(p.id)} className="input-button-3" type="submit" >Renovar</button>
                         </div>}
                         </td>
                     </tr>
                                 ))}
                     
-                </table>
+                    </table>
                 </div>  
                 <div className="nav-page">
                         {page===0 ? '' : <button className="button-previous" onClick={anteriorPage}>{'<<Anterior'}</button>}      
                         <h3>{page+1}</h3> 
                         { page+1 === totalPages ? '': <button className="button-next" onClick={proximaPage}>{'Próxima>>'}</button>} 
                 </div>              
+            </div> :
+            tela === 'alterarSenha' ?
+            <div>
+                <div>
+                    <section className='form'>                    
+                    <form onSubmit={salvarUsuario}>
+                        <h1>Alterar senha.</h1>
+                        <input className="email" type="text" name="userName" id="userName" value={user.userName} disabled/>
+                        <input className="senha" type="password" name="senha" id="senha" placeholder="Digite a nova senha" value={password} onChange={e => setPassword(e.target.value)}/>
+                        <input className="submit" type="submit" value="Salvar"/>                        
+                    </form>
+                    </section>
+                </div>
+            </div>
+            : '' 
+            }
+
 
             </body>
             <footer>
@@ -198,7 +266,7 @@ export default function UsuarioConsulta(){
                 </div>
                 <div className="copyright">
                         Copyright © www.devthiagofurtado.com 2022
-                    </div> 
+                </div> 
                
             </footer>
             </div>

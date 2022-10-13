@@ -6,6 +6,7 @@ import com.devthiagofurtado.valmodas.service.ClienteService;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -45,10 +46,11 @@ public class DozerConverter {
         user1.setUserName(user.getUserName());
         user1.setFullName(user.getFullName());
         user1.setPassword(result);
-        user1.setAccountNonExpired(false);
-        user1.setAccountNonLocked(false);
-        user1.setCredentialsNonExpired(false);
-        user1.setDateLicense(LocalDate.now());
+        var testeData = user.getDateLicense() != null && (user.getDateLicense().compareTo(LocalDate.now()) > 0);
+        user1.setAccountNonExpired(testeData);
+        user1.setAccountNonLocked(testeData);
+        user1.setCredentialsNonExpired(testeData);
+        user1.setDateLicense( user.getDateLicense() == null ? LocalDate.now(): user.getDateLicense());
         user1.setPermissions(
                 user.getPermissions().stream().map(DozerConverter::permissionVOToEntity).collect(Collectors.toList())
         );
