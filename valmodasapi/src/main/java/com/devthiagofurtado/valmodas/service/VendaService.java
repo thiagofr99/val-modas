@@ -5,10 +5,13 @@ import com.devthiagofurtado.valmodas.data.model.Cliente;
 import com.devthiagofurtado.valmodas.data.model.Produto;
 import com.devthiagofurtado.valmodas.data.model.Venda;
 import com.devthiagofurtado.valmodas.data.vo.PagamentoVO;
+import com.devthiagofurtado.valmodas.data.vo.ProdutoVO;
 import com.devthiagofurtado.valmodas.data.vo.VendaVO;
 import com.devthiagofurtado.valmodas.exception.ResourceBadRequestException;
 import com.devthiagofurtado.valmodas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -105,5 +108,15 @@ public class VendaService {
 
         return vendaRepository.findAllByCliente(cliente).stream().map(this::convertToVendaVO).collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public Page<VendaVO> buscarVendasPorCliente(Long idCliente, Pageable pageable, String userName) {
+        userService.validarUsuarioAdmGerente(userName);
+        var cliente = clienteService.buscarEntityPorId(idCliente);
+        var page = vendaRepository.findAllByCliente(cliente, pageable);
+
+        return page.map(this::convertToVendaVO);
+    }
+
 
 }
