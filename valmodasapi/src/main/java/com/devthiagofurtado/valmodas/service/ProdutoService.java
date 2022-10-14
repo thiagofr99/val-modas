@@ -60,6 +60,7 @@ public class ProdutoService {
         var produto = produtoRepository.findById(idProduto).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
         var produtoVO = DozerConverter.parseObject(produto, ProdutoVO.class);
         produtoVO.setFornecedorId(produto.getFornecedor().getId());
+        produtoVO.setFornecedorVO( fornecedorService.buscarPorIdInterno(produto.getFornecedor().getId()) );
         return produtoVO;
     }
 
@@ -82,7 +83,9 @@ public class ProdutoService {
     }
 
     private ProdutoVO convertToProdutoVO(Produto produto) {
-        return DozerConverter.parseObject(produto, ProdutoVO.class);
+        var vo = DozerConverter.parseObject(produto, ProdutoVO.class);
+        if(produto.getFornecedor()!=null) vo.setFornecedorVO( fornecedorService.buscarPorIdInterno(produto.getFornecedor().getId()) );
+        return vo;
     }
 
     @Transactional(readOnly = true)

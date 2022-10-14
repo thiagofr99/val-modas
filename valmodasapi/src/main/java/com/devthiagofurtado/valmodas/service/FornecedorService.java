@@ -52,6 +52,12 @@ public class FornecedorService {
     }
 
     @Transactional(readOnly = true)
+    public FornecedorVO buscarPorIdInterno(Long idFornecedor) {
+        var fornecedor = fornecedorRepository.findById(idFornecedor).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
+        return DozerConverter.parseObject(fornecedor, FornecedorVO.class);
+    }
+
+    @Transactional(readOnly = true)
     public Page<FornecedorVO> buscarPorNomeOuParteDoNome(String busca, Pageable pageable, String userName) {
         userService.validarUsuarioAdmGerente(userName);
 

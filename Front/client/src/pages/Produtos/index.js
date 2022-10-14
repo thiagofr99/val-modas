@@ -36,7 +36,8 @@ export default function Produtos(){
     const [codigoBarra, setCodigoBarra] = useState('');
     const [fornecedorId, setFornecedorId] = useState();    
     const [fornecedores, setFornecedores] = useState([]);
-    const [produtos, setProdutos] = useState([]);    
+    const [produtos, setProdutos] = useState([]);
+    
 
     //variavel busca
     const [nomeFornecedor, setNomeFornecedor] = useState('');
@@ -147,7 +148,8 @@ export default function Produtos(){
                 setValorVenda(response.data.valorVenda);
                 setCodigoBarra(response.data.codigoBarra);  
                 setFornecedorId(response.data.fornecedorId); 
-                setEstoque(response.data.estoque);
+                setEstoque(response.data.estoque);                
+                setNomeFornecedor(response.data.fornecedorVO.nomeFornecedor);
               })          
             setVarVisivel(true);
             toast.success('Busca realizada com sucesso.', {
