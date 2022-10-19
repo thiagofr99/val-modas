@@ -2,15 +2,10 @@ package com.devthiagofurtado.valmodas.converter;
 
 import com.devthiagofurtado.valmodas.data.model.*;
 import com.devthiagofurtado.valmodas.data.vo.*;
-import com.devthiagofurtado.valmodas.service.ClienteService;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
@@ -127,6 +122,30 @@ public class DozerConverter {
                 .valorPagamento(pagamento.getValorPagamento())
                 .numeroParcelas(pagamento.getNumeroParcelas())
                 .key( pagamento.getId() )
+                .build();
+
+    }
+
+    public static Devolucao devolucaoVOToEntity(DevolucaoVO vo, Venda venda) {
+
+        return Devolucao.builder()
+                .venda(venda)
+                .valorDevolucao(vo.getValorDevolucao())
+                .produtos( vo.getProdutosVOS().stream().map(p-> DozerConverter.parseObject(p, Produto.class)).collect(Collectors.toList()) )
+                .motivo(vo.getMotivo())
+                .id( vo.getKey() )
+                .build();
+
+    }
+
+    public static DevolucaoVO devolucaoToVO(Devolucao devolucao) {
+
+        return DevolucaoVO.builder()
+                .vendaId(devolucao.getVenda().getId())
+                .valorDevolucao(devolucao.getValorDevolucao())
+                .produtosVOS( devolucao.getProdutos().stream().map(p-> DozerConverter.parseObject(p, ProdutoVO.class)).collect(Collectors.toList()) )
+                .motivo(devolucao.getMotivo())
+                .key( devolucao.getId() )
                 .build();
 
     }

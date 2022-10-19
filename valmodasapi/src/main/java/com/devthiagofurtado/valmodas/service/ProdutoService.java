@@ -103,5 +103,12 @@ public class ProdutoService {
             produtoRepository.save(pdt);
         });
     }
-
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void devolverProduto(Produto produto, String userName) {
+        Produto pdt = buscarEntityPorId(produto.getId());
+        pdt.setAtualizadoEm(LocalDateTime.now());
+        pdt.setResponsavelAtualizacao(userName);
+        pdt.setEstoque(true);
+        produtoRepository.save(pdt);
+    }
 }
