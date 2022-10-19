@@ -275,7 +275,7 @@ export default function Clientes(){
 
                                 </div>
                                 <div  className="texto-vendas">
-                                    <h2>Promissoras</h2>
+                                    <h2>Promissorias</h2>
                                     {
                                         vendas.map( v=>(
                                             <div>                                                
