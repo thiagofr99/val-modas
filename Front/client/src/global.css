@@ -618,3 +618,16 @@ li{
  .texto-vendas p{
     padding: 5px;
  }
+
+ .button-buscar-novo-select{
+    background-color: #AF2B76;
+    color: #FFF;
+    padding: 10px;
+    border: none;
+    margin-top: -60px;
+    position: absolute;
+    margin-left: 80%;
+
+ }
+
+ 

@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-
+import Select from 'react-select';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -37,11 +37,17 @@ export default function Produtos(){
     const [fornecedorId, setFornecedorId] = useState();    
     const [fornecedores, setFornecedores] = useState([]);
     const [produtos, setProdutos] = useState([]);
+
+    //Variaveis Venda
+    const [clientes ,setClientes] = useState([]);
+    const [clienteId, setClienteId] = useState();
+    const [vendas, setVendas] = useState([]);
     
 
     //variavel busca
     const [nomeFornecedor, setNomeFornecedor] = useState('');
     const [nomeProdutoBusca, setNomeProdutoBusca] = useState('');
+    const [nomeCliente, setNomeCliente] = useState('');
 
     const [dialog, setDialog] = useState({
         message: "",
@@ -85,6 +91,68 @@ export default function Produtos(){
                 }
               }).then(responses => {
                   setFornecedores(responses.data._embedded.fornecedorVoes);                  
+              })          
+
+            toast.success('Busca realizada com sucesso.', {
+                position: toast.POSITION.TOP_CENTER
+              })            
+
+        } catch (erro){
+            toast.error('Busca não retornou dados.', {
+                position: toast.POSITION.TOP_CENTER
+              })            
+        }
+    }
+
+    async function buscarClientes(e){
+        e.preventDefault();
+        try{              
+
+            await api.get('cliente/findAllByClienteName',{                
+                headers:{
+                    Authorization: `Bearer ${accessToken}`
+                },
+                params: {
+                    nomeCliente: nomeCliente,
+                    page: 0,
+                    limit: 10,
+                    direction: 'asc'
+                }
+              }).then(responses => {
+                    let opcoes = [];
+                  responses.data._embedded.clienteVoes.forEach(c=>{
+                    let opcao = {value: c.id, label: c.nomeCliente};
+                    opcoes.push(opcao)                    
+                  })
+                  setClientes(opcoes);
+              })          
+
+            toast.success('Busca realizada com sucesso.', {
+                position: toast.POSITION.TOP_CENTER
+              })            
+
+        } catch (erro){
+            toast.error('Busca não retornou dados.', {
+                position: toast.POSITION.TOP_CENTER
+              })            
+        }
+    }
+
+    async function buscarVendas(e){
+        e.preventDefault();        
+        try{              
+
+            await api.get(`venda/findAllByCliente/${clienteId.value}`,{                
+                headers:{
+                    Authorization: `Bearer ${accessToken}`
+                }
+              }).then(responses => {
+                    let vendas = [];
+                  responses.data._embedded.vendaVoes.forEach(v=>{
+                    let venda = {value: v.id, label: "Venda:"+v.id+" Data:"+v.cadastradoEm+" Valor total: "+v.valorTotal };
+                    vendas.push(venda)                    
+                  })
+                  setVendas(vendas);
               })          
 
             toast.success('Busca realizada com sucesso.', {
@@ -223,7 +291,7 @@ export default function Produtos(){
             visao === 'default' ? 
                 <div className="container-info">
                 <div className="item item1"><button onClick={()=> mudarVisao('cadastrar')} className="btn-item">Cadastrar Produto</button></div>
-                <div className="item item2"><button className="btn-item">Devolver Produto</button></div>
+                <div className="item item2"><button onClick={()=> mudarVisao('devolver')} className="btn-item">Devolver Produto</button></div>
                 <div className="item item3"><button className="btn-item">Excluir Produto</button></div>
                 <div className="item item3"><button onClick={()=> mudarVisao('consultar')} className="btn-item">Consultar Produto</button></div>
                 </div> :
@@ -341,6 +409,33 @@ export default function Produtos(){
                 }
                 
                 </form>                  
+                </div> :
+                visao === 'devolver' ?
+                <div>
+                    <form>
+                        <div className="busca">
+                            <input className="input-busca-produto" type="text" placeholder="Buscar Clientes" value={nomeCliente} onChange={e => setNomeCliente(e.target.value)} />
+                            <button onClick={ buscarClientes } className="button-buscar">Buscar</button>                                                                                                                                                     
+                        </div>
+                        <label for="fornecedor">Clientes:</label>
+                    { clientes.length > 0 ? 
+                        <div>                                                
+                        <Select 
+                        options={clientes} 
+                        isSearchable={true}
+                        onChange={(item)=> setClienteId(item)}
+                        
+                        />
+                        <button onClick={ buscarVendas } className="button-buscar-novo-select">Buscar</button>
+                        </div>                        
+                                
+                            
+                        
+                    : <input className="input-produto" type="text" id="fornecedor" disabled readonly/>}
+
+                    </form>
+                    
+
                 </div> :
                 <div>
                 <form>
