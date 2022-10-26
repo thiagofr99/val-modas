@@ -2,6 +2,7 @@ import React,{useState} from "react";
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Collapse} from 'react-collapse';
 
 import Loading from '../../layout/Loading';
 
@@ -48,6 +49,10 @@ export default function Produtos(){
     const [nomeFornecedor, setNomeFornecedor] = useState('');
     const [nomeProdutoBusca, setNomeProdutoBusca] = useState('');
     const [nomeCliente, setNomeCliente] = useState('');
+
+    //Boolean collapse
+    const [ testeCollapse, setTesteCollapse ] = useState(1);
+    const [ teste, setTeste ] = useState(false);
 
     const [dialog, setDialog] = useState({
         message: "",
@@ -234,6 +239,12 @@ export default function Produtos(){
     async function mudarVisao(param){
         setVisao(param);
         console.log(fornecedores.length)
+    }
+
+    async function expandir(e){        
+        e.preventDefault();
+        setTeste(!teste);
+        
     }
 
     async function salvar(e){
@@ -427,6 +438,23 @@ export default function Produtos(){
                         
                         />
                         <button onClick={ buscarVendas } className="button-buscar-novo-select">Buscar</button>
+                            {vendas.length > 0 ? 
+                            <div>
+                            {vendas.map( v=>(
+                                    <div>
+                                        <button onClick={ expandir } className="button-item-expandir">{v.label}</button>
+                                        <Collapse isOpened={teste} theme={{collapse: 'foo', content: 'bar'}}>
+                                        <div className="exibir-venda">Random content</div>
+                                        </Collapse>
+                                    </div>
+                                    
+                                ))}
+                            
+
+                            </div> : ""
+                            }
+
+
                         </div>                        
                                 
                             
