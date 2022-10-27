@@ -4,13 +4,10 @@ import com.devthiagofurtado.valmodas.converter.DozerConverter;
 import com.devthiagofurtado.valmodas.data.model.Cliente;
 import com.devthiagofurtado.valmodas.data.model.Devolucao;
 import com.devthiagofurtado.valmodas.data.model.Produto;
-import com.devthiagofurtado.valmodas.data.model.Venda;
 import com.devthiagofurtado.valmodas.data.vo.DevolucaoVO;
-import com.devthiagofurtado.valmodas.data.vo.PagamentoVO;
 import com.devthiagofurtado.valmodas.data.vo.VendaVO;
 import com.devthiagofurtado.valmodas.exception.ResourceBadRequestException;
 import com.devthiagofurtado.valmodas.repository.DevolucaoRepository;
-import com.devthiagofurtado.valmodas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,32 +58,32 @@ public class DevolucaoService {
         devolucoes.forEach(dev -> {
             produtosDevolvidos.addAll(dev.getProdutos());
         });
-        if( !produtosDevolvidos.isEmpty() && produtosVenda.equals(produtosDevolvidos) ){
-            throw new ResourceBadRequestException("Todos os produtos da venda "+venda.getId()+" já foram devolvidos.");
+        if (!produtosDevolvidos.isEmpty() && produtosVenda.equals(produtosDevolvidos)) {
+            throw new ResourceBadRequestException("Todos os produtos da venda " + venda.getId() + " já foram devolvidos.");
         } else {
-            if(!produtosDevolvidos.isEmpty()){
+            if (!produtosDevolvidos.isEmpty()) {
                 var idsDevolucao = produtosDevolvidos.stream().map(Produto::getId).collect(Collectors.toList());
                 produtosDisponiveis = produtosVenda.stream().filter(p -> !idsDevolucao.contains(p.getId())).collect(Collectors.toList());
             }
         }
-        if(produtosDisponiveis.isEmpty()){
+        if (produtosDisponiveis.isEmpty()) {
             //devolve os produtos na solicitação
-            this.devolveProdutos(devolucao.getProdutos(),userName);
+            this.devolveProdutos(devolucao.getProdutos(), userName);
         } else {
             //verifica se produtos na solicitação podem ser devolvidos
             var idDevolucoes = devolucao.getProdutos().stream().map(Produto::getId).collect(Collectors.toList());
             List<Produto> produtosADevolver = new ArrayList<>();
-            produtosDisponiveis.forEach(p->{
-                if(idDevolucoes.contains(p.getId())){
+            produtosDisponiveis.forEach(p -> {
+                if (idDevolucoes.contains(p.getId())) {
                     produtosADevolver.add(p);
                 } else {
-                    throw new ResourceBadRequestException("Produto "+ p.getNomeProduto() +" já devolvido desta venda.");
+                    throw new ResourceBadRequestException("Produto " + p.getNomeProduto() + " já devolvido desta venda.");
                 }
             });
             this.devolveProdutos(produtosADevolver, userName);
         }
 
-        return DozerConverter.devolucaoToVO( devolucaoRepository.save(devolucao) );
+        return DozerConverter.devolucaoToVO(devolucaoRepository.save(devolucao));
     }
 
 
@@ -120,10 +118,47 @@ public class DevolucaoService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void devolveProdutos(List<Produto> produtos, String userName){
+    public void devolveProdutos(List<Produto> produtos, String userName) {
         produtos.forEach(produto -> {
             produtoService.devolverProduto(produto, userName);
             produto.setEstoque(true);
+        });
+
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public List<Devolucao> buscarDevolucoesPorIdVenda(Long idVenda) {
+        var venda = vendaService.buscarEntityPorId(idVenda);
+        return devolucaoRepository.findAllByVenda(venda);
+
+    }
+
+    public void verificaSeProdutosDaVendaPossuiDevolucao(VendaVO vendaVO) {
+
+        var devolucoes = this.buscarDevolucoesPorIdVenda(vendaVO.getKey());
+
+        List<Produto> produtosDevolvidos = new ArrayList<>();
+        devolucoes.forEach(d -> {
+            produtosDevolvidos.addAll(d.getProdutos());
+        });
+
+        Map<Long, Long> idProdutoDevolucao = new HashMap<Long, Long>();
+        devolucoes.forEach(d -> {
+            var idProdutos = d.getProdutos().stream().map(Produto::getId).collect(Collectors.toList());
+            idProdutos.forEach(ip -> {
+                idProdutoDevolucao.put(ip, d.getId());
+            });
+        });
+
+
+        vendaVO.getProdutosVOS().forEach(pv -> {
+
+            if (idProdutoDevolucao.containsKey(pv.getKey())) {
+                pv.setPossuiDevolucao(true);
+                pv.setIdDevolucao(idProdutoDevolucao.get(pv.getKey()));
+            } else {
+                pv.setPossuiDevolucao(false);
+            }
         });
 
     }

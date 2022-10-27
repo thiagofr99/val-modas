@@ -46,4 +46,9 @@ public class ProdutoVO extends ResourceSupport implements Serializable {
     private boolean estoque;
 
     private FornecedorVO fornecedorVO;
+
+    private boolean possuiDevolucao;
+
+    private Long idDevolucao;
+
 }

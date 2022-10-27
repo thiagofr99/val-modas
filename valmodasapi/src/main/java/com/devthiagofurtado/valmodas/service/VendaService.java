@@ -118,5 +118,14 @@ public class VendaService {
         return page.map(this::convertToVendaVO);
     }
 
+    @Transactional(readOnly = true)
+    public Page<VendaVO> buscarVendasPorClienteParaDevolucao(Long idCliente, Pageable pageable, String userName) {
+        userService.validarUsuarioAdmGerente(userName);
+        var cliente = clienteService.buscarEntityPorId(idCliente);
+        var page = vendaRepository.findAllByCliente(cliente, pageable);
+
+        return page.map(this::convertToVendaVO);
+    }
+
 
 }
