@@ -3,6 +3,8 @@ import Select from 'react-select';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Collapse} from 'react-collapse';
+import moment from 'moment';
+
 
 import Loading from '../../layout/Loading';
 
@@ -153,8 +155,10 @@ export default function Produtos(){
                 }
               }).then(responses => {
                     let vendas = [];
+                    
                   responses.data._embedded.vendaVoes.forEach(v=>{
-                    let venda = {value: v.id, label: "Venda:"+v.id+" Data:"+v.cadastradoEm+" Valor total: "+v.valorTotal };
+                    
+                    let venda = {value: v.id, label: "Venda:"+v.id+" Data:"+ moment(v.cadastradoEm).format("DD/MM/YYYY")+" Valor total: "+v.valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) };
                     vendas.push(venda)                    
                   })
                   setVendas(vendas);
