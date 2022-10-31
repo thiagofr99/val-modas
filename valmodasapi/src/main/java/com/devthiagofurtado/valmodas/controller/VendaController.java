@@ -71,7 +71,7 @@ public class VendaController {
 
     @ApiOperation(value = "Busca vendas por id do Cliente.")
     @GetMapping(value = {"/findAllByCliente/{id}"}, produces = {"application/json", "application/xml", "application/x-yaml"})
-    public ResponseEntity<?> buscarTodosPorFornecedor(@RequestParam(value = "page", defaultValue = "0") int page,
+    public ResponseEntity<?> buscarTodasVendasPorCliente(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "12") int limit,
                                                       @RequestParam(value = "direction", defaultValue = "ASC") String direction,
                                                       @PathVariable(value = "id") Long id
@@ -83,6 +83,26 @@ public class VendaController {
 
         Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "cadastradoEm"));
         var vendasVOS = vendaService.buscarVendasPorCliente(id, pageable, user);
+        vendasVOS.forEach(p ->
+                p.add(linkTo(methodOn(VendaController.class).buscaPorId(p.getKey())).withSelfRel())
+        );
+        return new ResponseEntity<>(assembler.toResource(vendasVOS), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Busca vendas por id do Cliente para devolução.")
+    @GetMapping(value = {"/findAllByClienteForDevolution/{id}"}, produces = {"application/json", "application/xml", "application/x-yaml"})
+    public ResponseEntity<?> buscarTodasVendasPorClienteParaDevolucao(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                                      @RequestParam(value = "limit", defaultValue = "12") int limit,
+                                                                      @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+                                                                      @PathVariable(value = "id") Long id
+
+    ) {
+        String token = HeaderUtil.obterToken();
+        String user = tokenProvider.getUsername(token.substring(7, token.length()));
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "cadastradoEm"));
+        var vendasVOS = vendaService.buscarVendasPorClienteParaDevolucao(id, pageable, user);
         vendasVOS.forEach(p ->
                 p.add(linkTo(methodOn(VendaController.class).buscaPorId(p.getKey())).withSelfRel())
         );

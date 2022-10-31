@@ -39,6 +39,9 @@ public class VendaService {
     @Autowired
     private PagamentoService pagamentoService;
 
+    @Autowired
+    private DevolucaoService devolucaoService;
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public VendaVO salvar(VendaVO vendaVO, String userName) {
@@ -123,8 +126,13 @@ public class VendaService {
         userService.validarUsuarioAdmGerente(userName);
         var cliente = clienteService.buscarEntityPorId(idCliente);
         var page = vendaRepository.findAllByCliente(cliente, pageable);
+        var vo = page.map(this::convertToVendaVO);
 
-        return page.map(this::convertToVendaVO);
+        vo.forEach(vendaVO->{
+            devolucaoService.verificaSeProdutosDaVendaPossuiDevolucao(vendaVO);
+        });
+
+        return vo;
     }
 
 
