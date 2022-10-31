@@ -149,7 +149,7 @@ export default function Produtos(){
         e.preventDefault();        
         try{              
 
-            await api.get(`venda/findAllByCliente/${clienteId.value}`,{                
+            await api.get(`venda/findAllByClienteForDevolution/${clienteId.value}`,{                
                 headers:{
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -158,7 +158,9 @@ export default function Produtos(){
                     
                   responses.data._embedded.vendaVoes.forEach(v=>{
                     
-                    let venda = {value: v.id, label: "Venda:"+v.id+" Data:"+ moment(v.cadastradoEm).format("DD/MM/YYYY")+" Valor total: "+v.valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) };
+                    let venda = {value: v.id, 
+                                 label: "Venda:"+v.id+" Data:"+ moment(v.cadastradoEm).format("DD/MM/YYYY")+" Valor total: "+v.valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+                                 vendaDevolucao: v };
                     vendas.push(venda)                    
                   })
                   setVendas(vendas);
@@ -448,7 +450,30 @@ export default function Produtos(){
                                     <div>
                                         <button onClick={ expandir } className="button-item-expandir">{v.label}</button>
                                         <Collapse isOpened={teste} theme={{collapse: 'foo', content: 'bar'}}>
-                                        <div className="exibir-venda">Random content</div>
+                                        
+                                        <div className="exibir-venda">
+                                            <label className="label-devolucao">Número Venda</label>
+                                            <input className="input-devolucao" disabled={true} value={v.vendaDevolucao.id}></input>                                            
+                                            <label className="label-devolucao">Data Venda</label>
+                                            <input className="input-devolucao" disabled={true} value={ moment(v.vendaDevolucao.cadastradoEm).format("DD/MM/YYYY")}></input>                                            
+                                            <br/>
+                                            {v.vendaDevolucao.produtosVOS.map( p=>(
+                                                <div>
+                                                    <label className="label-devolucao">Nome produto</label>
+                                                    <input className="input-devolucao" disabled={true} value={ p.nomeProduto }></input>                                            
+                                                    <label className="label-devolucao">Valor de Venda</label>
+                                                    <input className="input-devolucao" disabled={true} value={ p.valorVenda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }></input>                                            
+                                                    {p.possuiDevolucao ? 
+                                                    <button className="button-devolucao-disabled" disabled={true}>Já devolvido</button>:
+                                                    <button className="button-devolucao" >Devolver</button>
+                                                    }
+                                                </div>
+                                            ) )
+
+                                            }
+                                            
+
+                                        </div>
                                         </Collapse>
                                     </div>
                                     
