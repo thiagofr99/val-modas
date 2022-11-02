@@ -50,11 +50,7 @@ export default function Produtos(){
     //variavel busca
     const [nomeFornecedor, setNomeFornecedor] = useState('');
     const [nomeProdutoBusca, setNomeProdutoBusca] = useState('');
-    const [nomeCliente, setNomeCliente] = useState('');
-
-    //Boolean collapse
-    const [ testeCollapse, setTesteCollapse ] = useState(1);
-    const [ teste, setTeste ] = useState(false);
+    const [nomeCliente, setNomeCliente] = useState('');    
 
     const [dialog, setDialog] = useState({
         message: "",
@@ -160,7 +156,8 @@ export default function Produtos(){
                     
                     let venda = {value: v.id, 
                                  label: "Venda:"+v.id+" Data:"+ moment(v.cadastradoEm).format("DD/MM/YYYY")+" Valor total: "+v.valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
-                                 vendaDevolucao: v };
+                                 vendaDevolucao: v,
+                                 exibeCollapse: false };
                     vendas.push(venda)                    
                   })
                   setVendas(vendas);
@@ -247,11 +244,19 @@ export default function Produtos(){
         console.log(fornecedores.length)
     }
 
-    async function expandir(e){        
+    async function expandir(e, param){        
         e.preventDefault();
-        setTeste(!teste);
+        const index = vendas.findIndex((t) => {
+            return t.value === param;
+        });
+            
+        const tempTest = [...vendas];
         
-    }
+        tempTest[index].exibeCollapse = !tempTest[index].exibeCollapse;
+            
+        setVendas(tempTest);        
+        
+    }      
 
     async function salvar(e){
         e.preventDefault();
@@ -444,12 +449,13 @@ export default function Produtos(){
                         
                         />
                         <button onClick={ buscarVendas } className="button-buscar-novo-select">Buscar</button>
-                            {vendas.length > 0 ? 
+                            {vendas.length > 0 ?
+                            
                             <div>
-                            {vendas.map( v=>(
-                                    <div>
-                                        <button onClick={ expandir } className="button-item-expandir">{v.label}</button>
-                                        <Collapse isOpened={teste} theme={{collapse: 'foo', content: 'bar'}}>
+                            {vendas.map( v=>(                                    
+                                    <div>                                        
+                                        <button onClick={ e=> expandir(e, v.value) }className="button-item-expandir">{v.label}</button>
+                                        <Collapse isOpened={v.exibeCollapse} theme={{collapse: 'foo', content: 'bar'}}>
                                         
                                         <div className="exibir-venda">
                                             <label className="label-devolucao">Número Venda</label>
@@ -458,7 +464,7 @@ export default function Produtos(){
                                             <input className="input-devolucao" disabled={true} value={ moment(v.vendaDevolucao.cadastradoEm).format("DD/MM/YYYY")}></input>                                            
                                             <br/>
                                             {v.vendaDevolucao.produtosVOS.map( p=>(
-                                                <div>
+                                                <div className="container-devolucao">                                                
                                                     <label className="label-devolucao">Nome produto</label>
                                                     <input className="input-devolucao" disabled={true} value={ p.nomeProduto }></input>                                            
                                                     <label className="label-devolucao">Valor de Venda</label>
@@ -471,7 +477,9 @@ export default function Produtos(){
                                             ) )
 
                                             }
-                                            
+                                            <br/>
+                                            <label className="label-devolucao">Total Venda</label>
+                                            <input className="input-devolucao" disabled={true} value={v.vendaDevolucao.valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}></input>                                            
 
                                         </div>
                                         </Collapse>
