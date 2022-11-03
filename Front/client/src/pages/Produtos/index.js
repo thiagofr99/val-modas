@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Collapse} from 'react-collapse';
 import moment from 'moment';
-
+import DialogInput from "../../layout/DialogInput";
 
 import Loading from '../../layout/Loading';
 
@@ -13,7 +13,7 @@ import api from '../../services/api'
 
 import './style.css';
 import CabechalhoManage from "../../layout/CabecalhoManage";
-import Dialog from "../../layout/DialogConfirm";
+
 
 export default function Produtos(){
   
@@ -52,31 +52,50 @@ export default function Produtos(){
     const [nomeProdutoBusca, setNomeProdutoBusca] = useState('');
     const [nomeCliente, setNomeCliente] = useState('');    
 
-    const [dialog, setDialog] = useState({
+    const [dialogInput, setDialogInput] = useState({
         message: "",
         isLoading: false,
-        nome: "",
-        id: 0,
-      });
-
-    const handleDialog = (message, isLoading, nome, id) => {
-    setDialog({
-        message,
-        isLoading,        
-        nome,
-        id
+        motivo: "",
+        valor: 0,
+        idVenda: 0,
+        produto: [],
+        evento: null
     });
-    };
 
-    const areUSure = (choose) => {
-        if (choose) {
-          //deletar();
-          handleDialog("", false);
-        } else {
-          
-          handleDialog("", false);
+   
+    const handleDialogInput = (message, isLoading, motivo, valor, idVenda, produto, evento) => {
+        setDialogInput({
+            message,
+            isLoading,        
+            motivo,
+            valor,
+            idVenda,
+            produto,
+            evento
+    });
+    };      
+
+    const areUSureDevolucao = (params) => {
+        if (params.validacao) {
+            console.log(params.validacao);
+            let jsonEnviar = {
+                
+                vendaId: dialogInput.idVenda,
+                produtosVOS:[
+                    dialogInput.produto
+                ],
+                motivo: params.motivoDevolucao,
+                valorDevolucao: params.valorDevolucao
+            }
+            
+            salvarDevolucao(dialogInput.evento, jsonEnviar);
+            
+            handleDialogInput("", false);
+        } else {          
+            console.log(params);  
+            handleDialogInput("", false);
         }
-      };
+    };    
     
     async function buscarFornecedores(e){
         e.preventDefault();
@@ -303,6 +322,40 @@ export default function Produtos(){
     
       };
 
+      async function salvarDevolucao(e, json){
+        e.preventDefault();
+        setLoadOn(true);                
+        const data = json;
+    
+        try{
+    
+          await api.post('devolucao/salvar',data,{
+            headers:{
+                Authorization: `Bearer ${accessToken}`
+            }
+          });
+            
+          toast.success('Devolução realizada com sucesso.', {
+            position: toast.POSITION.TOP_CENTER
+          })
+        setLoadOn(false);                      
+        setVisao('default');
+        
+
+        } catch (err){
+            toast.error('Erro ao devolver produto.', {
+                position: toast.POSITION.TOP_CENTER
+              })
+            setLoadOn(false);
+        }
+    
+      };  
+
+    async function devolver(e, motivo, valor, idVenda, produto) {        
+        e.preventDefault();
+        handleDialogInput("Deseja devolver o produto?", true, motivo, valor, idVenda, produto, e);
+    } 
+
     return(
         <div id="containerPrincipal">
             {loadOn? <Loading></Loading>:
@@ -471,7 +524,7 @@ export default function Produtos(){
                                                     <input className="input-devolucao" disabled={true} value={ p.valorVenda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }></input>                                            
                                                     {p.possuiDevolucao ? 
                                                     <button className="button-devolucao-disabled" disabled={true}>Já devolvido</button>:
-                                                    <button className="button-devolucao" >Devolver</button>
+                                                    <button className="button-devolucao" onClick={e=> devolver( e, "Digite o motivo", 0, v.value, p )} >Devolver</button>
                                                     }
                                                 </div>
                                             ) )
@@ -546,12 +599,13 @@ export default function Produtos(){
             </body>
             </div>            
 }
-            {dialog.isLoading && (<Dialog
-                //Update
-                nameProduct={dialog.nome}
-                onDialog={areUSure}
-                message={dialog.message}
-            />)}
+            
+            {dialogInput.isLoading && (<DialogInput
+                                
+                onDialog={areUSureDevolucao}
+                message={dialogInput.message}
+                    
+            />)}             
         </div>
     );
 }

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +52,8 @@ public class DevolucaoService {
         var venda = vendaService.buscarEntityPorId(devolucaoVO.getVendaId());
 
         var devolucao = DozerConverter.devolucaoVOToEntity(devolucaoVO, venda);
+        devolucao.setCadastradoEm(LocalDateTime.now());
+        devolucao.setResponsavelCadastro(userName);
 
         //Verificar se produtos já foram devolvidos
         var devolucoes = devolucaoRepository.findAllByVenda(venda);
