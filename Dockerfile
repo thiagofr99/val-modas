@@ -1,2 +1,2 @@
-FROM mariadb:10.5.8
+FROM mysql:8.0.31
 EXPOSE 3308
