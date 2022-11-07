@@ -1,2 +1,2 @@
-FROM mysql:5.7.22
+FROM mysql:8.0.31
 EXPOSE 3308
