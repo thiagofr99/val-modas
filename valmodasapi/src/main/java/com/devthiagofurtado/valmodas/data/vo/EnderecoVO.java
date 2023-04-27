@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClienteVO extends ResourceSupport implements Serializable {
+public class EnderecoVO extends ResourceSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,9 +21,15 @@ public class ClienteVO extends ResourceSupport implements Serializable {
     @JsonProperty("id")
     private Long key;
 
-    private String nomeCliente;
+    private String nomeRua;
 
-    private String telefone;
+    private String numero;
+
+    private String bairro;
+
+    private String cep;
+
+    private String complemento;
 
     private LocalDateTime cadastradoEm;
 
@@ -32,7 +38,4 @@ public class ClienteVO extends ResourceSupport implements Serializable {
     private String responsavelCadastro;
 
     private String responsavelAtualizacao;
-
-    private EnderecoVO enderecoVO;
-
 }

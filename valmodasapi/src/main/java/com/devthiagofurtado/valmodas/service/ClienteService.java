@@ -27,6 +27,9 @@ public class ClienteService {
     @Autowired
     private VendaService vendaService;
 
+    @Autowired
+    private EnderecoService enderecoService;
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ClienteVO salvar(ClienteVO clienteVO, String userName) {
@@ -37,12 +40,16 @@ public class ClienteService {
         if (clienteVO.getKey() == null) {
             cliente.setCadastradoEm(LocalDateTime.now());
             cliente.setResponsavelCadastro(userName);
+
         } else {
             cliente.setAtualizadoEm(LocalDateTime.now());
             cliente.setResponsavelAtualizacao(userName);
 
         }
         var clienteSalvo = clienteRepository.save(cliente);
+        enderecoService.salvar(clienteVO.getEnderecoVO(), clienteSalvo, userName);
+
+
         return DozerConverter.parseObject(clienteSalvo, ClienteVO.class);
 
     }
