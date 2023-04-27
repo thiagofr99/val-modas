@@ -30,7 +30,9 @@ export default function Clientes(){
     //Variaveis cliente
     const [id, setId] = useState();
     const [nomeCliente, setNomeCliente] = useState('');    
-    const [telefone, setTelefone] = useState('');    
+    const [telefone, setTelefone] = useState('');
+    const [cep, setCep] = useState('');    
+    const [nomeRua, setNomeRua] = useState('');    
 
     const [vendas,setVendas] = useState([]);
 
@@ -205,6 +207,20 @@ export default function Clientes(){
                     <label for="valorCompra">Telefone Cliente:</label>
                     <div className="inputs-produtos">                    
                         <input className="input-produto" type="number" id="valorCompra" placeholder="(xx) xxxx-xxxx" value={telefone} onChange={e => setTelefone(e.target.value)}/>
+                    </div>                   
+                    
+                </div>
+                <div>
+                    <label for="valorCompra">CEP:</label>
+                    <div className="inputs-produtos">                    
+                        <input className="input-produto" type="number" id="valorCompra" placeholder="xx.xxx-xxx" value={cep} onChange={e => setCep(e.target.value)}/>
+                    </div>                   
+                    
+                </div>
+                <div>
+                    <label for="valorCompra">Endereço:</label>
+                    <div className="inputs-produtos">                    
+                    <input className="input-produto" type="text" id="nome" name="userName" placeholder="Digite o nome da rua/av/travessa." value={nomeRua} onChange={e => setNomeRua(e.target.value)} />                                                                        
                     </div>                   
                     
                 </div>
