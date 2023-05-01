@@ -8,9 +8,12 @@ import Loading from '../../layout/Loading';
 import api from '../../services/api'
 
 
+
 import './style.css';
 import CabechalhoManage from "../../layout/CabecalhoManage";
 import Dialog from "../../layout/DialogConfirm";
+//import EnderecoBase from "../../layout/Endereco";
+import api_cep from "../../services/api_cep";
 
 export default function Clientes(){
   
@@ -32,8 +35,10 @@ export default function Clientes(){
     const [nomeCliente, setNomeCliente] = useState('');    
     const [telefone, setTelefone] = useState('');
     const [cep, setCep] = useState('');    
-    const [nomeRua, setNomeRua] = useState('');    
-
+    const [nomeRua, setNomeRua] = useState('');
+    const [numero, setNumero] = useState('');
+    const [bairro, setBairro] = useState('');    
+    const [complemento, setComplemento] = useState('');
     const [vendas,setVendas] = useState([]);
 
     //variavel busca    
@@ -98,6 +103,26 @@ export default function Clientes(){
         }
     }
 
+    async function buscarCep(e){
+        e.preventDefault();
+        try{              
+               
+            await api_cep.get(`${cep}/json/`).then(responses => {
+                setNomeRua(responses.data.logradouro);  
+                setBairro(responses.data.bairro);             
+              })          
+            console.log(nomeRua)
+            toast.success('Busca realizada com sucesso.', {
+                position: toast.POSITION.TOP_CENTER
+              })            
+
+        } catch (erro){
+            toast.error('Cep não encontrado no banco de dados.', {
+                position: toast.POSITION.TOP_CENTER
+              })            
+        }
+    }
+
     async function editar(e){
         e.preventDefault();        
         setEditando(true);   
@@ -146,12 +171,22 @@ export default function Clientes(){
 
     async function salvar(e){
         e.preventDefault();
-        setLoadOn(true);                
+        setLoadOn(true); 
+        let enderecoVO = {
+            bairro,
+            numero,
+            complemento,
+            nomeRua,
+            cep
+        }
         const data = {
             id,
             nomeCliente,
-            telefone
+            telefone,
+            enderecoVO
         }
+
+        console.log(enderecoVO);
     
         try{
     
@@ -211,9 +246,17 @@ export default function Clientes(){
                     
                 </div>
                 <div>
-                    <label for="valorCompra">CEP:</label>
+                <label for="valorCompra">CEP:</label>
+                <div className="inputs-produtos">                    
+                    <input className="input-produto" type="number" id="valorCompra" placeholder="xx.xxx-xxx" value={cep} onChange={e => setCep(e.target.value)}/>
+                    <button onClick={ buscarCep } className="button-buscar">Buscar</button>
+                </div>                   
+                
+                </div>
+                <div>
+                    <label for="valorCompra">Bairro:</label>
                     <div className="inputs-produtos">                    
-                        <input className="input-produto" type="number" id="valorCompra" placeholder="xx.xxx-xxx" value={cep} onChange={e => setCep(e.target.value)}/>
+                    <input className="input-produto" type="text" id="nome" name="userName" placeholder="Digite o bairro." value={bairro} onChange={e => setBairro(e.target.value)} />                                                                        
                     </div>                   
                     
                 </div>
@@ -224,6 +267,22 @@ export default function Clientes(){
                     </div>                   
                     
                 </div>
+                <div>
+                    <label for="valorCompra">Número:</label>
+                    <div className="inputs-produtos">                    
+                    <input className="input-produto" type="text" id="nome" name="userName" placeholder="Número da casa ou prédio." value={numero} onChange={e => setNumero(e.target.value)} />                                                                        
+                    </div>                   
+                    
+                </div>
+                <div>
+                    <label for="valorCompra">Complemento:</label>
+                    <div className="inputs-produtos">                    
+                    <input className="input-produto" type="text" id="nome" name="userName" placeholder="Ponto de referência/ Nº apt ou casa (para vilas)." value={complemento} onChange={e => setComplemento(e.target.value)} />                                                                        
+                    </div>                   
+                    
+                </div>
+         
+                {/*<EnderecoBase></EnderecoBase>*/}
                 <div className="inputs-produtos">
                 <button className="btn-pdt-cadastrar" onClick={salvar}>Cadastrar</button>
                 </div>
