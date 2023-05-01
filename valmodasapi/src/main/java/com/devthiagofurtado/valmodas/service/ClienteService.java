@@ -89,10 +89,12 @@ public class ClienteService {
 
         var clienteVo = DozerConverter.parseObject(cliente, ClienteVO.class);
 
+        var enderecoVo = enderecoService.buscarPorIdCliente(cliente,userName);
 
         return ClienteDetalhadoVO.builder()
                 .clienteVO(clienteVo)
                 .vendaVOS(vendasVo)
+                .enderecoVO(enderecoVo)
                 .build();
     }
 

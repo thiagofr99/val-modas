@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class EnderecoService {
@@ -23,6 +25,9 @@ public class EnderecoService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ClienteService clienteService;
 
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -50,6 +55,16 @@ public class EnderecoService {
     public EnderecoVO buscarPorId(Long idEndereco, String userName) {
         userService.validarUsuarioAdmGerente(userName);
         var endereco = enderecoRepository.findById(idEndereco).orElseThrow(() -> new ResourceNotFoundException("Não Localizou o registro pelo id."));
+        return DozerConverter.parseObject(endereco, EnderecoVO.class);
+    }
+
+    @Transactional(readOnly = true)
+    public EnderecoVO buscarPorIdCliente(Cliente cliente, String userName) {
+        userService.validarUsuarioAdmGerente(userName);
+        var enderecos = enderecoRepository.findByIdCliente(cliente);
+
+        Endereco endereco = enderecos.get(0);
+
         return DozerConverter.parseObject(endereco, EnderecoVO.class);
     }
 

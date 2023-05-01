@@ -18,4 +18,6 @@ public class ClienteDetalhadoVO extends ResourceSupport implements Serializable 
     private ClienteVO clienteVO;
 
     private List<VendaVO> vendaVOS;
+
+    private EnderecoVO enderecoVO;
 }
